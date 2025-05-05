@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <RootNamespace>GarageBooking</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentMigrator.Runner" Version="7.1.0" />
+        <PackageReference Include="FluentMigrator.Runner.Postgres" Version="7.1.0" />
+        <PackageReference Include="FluentNHibernate" Version="3.4.1" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4"/>
+        <PackageReference Include="NHibernate" Version="5.5.2" />
+        <PackageReference Include="NHibernate.Extensions.Npgsql" Version="9.0.2" />
+        <PackageReference Include="Npgsql" Version="9.0.3" />
+        <PackageReference Include="Scalar.AspNetCore" Version="2.2.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="publish\web.config" />
+      <_ContentIncludedByDefault Remove="publish\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="publish\appsettings.json" />
+      <_ContentIncludedByDefault Remove="publish\GarageBooking.Api.deps.json" />
+      <_ContentIncludedByDefault Remove="publish\GarageBooking.Api.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="publish\GarageBooking.Api.staticwebassets.endpoints.json" />
+    </ItemGroup>
+
+</Project>
