@@ -1,5 +1,5 @@
 using FluentNHibernate.Mapping;
-using GarageBooking.Orm.Entities;
+using GarageBooking.Entities;
 
 namespace GarageBooking.Maps;
 
@@ -15,5 +15,7 @@ public class GarageEventMap : ClassMap<GarageEvent>
         Map(x => x.EventDate).Column("event_date");
         Map(x => x.StartTime).Column("start_time");
         Map(x => x.EndTime).Column("end_time");
+
+        References(x => x.User).Column("user_id");
     }
 }

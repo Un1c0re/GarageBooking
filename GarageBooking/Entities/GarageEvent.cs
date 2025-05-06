@@ -1,8 +1,9 @@
-namespace GarageBooking.Orm.Entities;
+namespace GarageBooking.Entities;
 
 public class GarageEvent
 {
     public virtual long Id { get; set; }
+    public virtual User User { get; set; }
     public virtual string Title { get; set; }
     public virtual DateOnly EventDate { get; set; }
     public virtual TimeOnly StartTime { get; set; }

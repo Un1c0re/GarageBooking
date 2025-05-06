@@ -1,4 +1,4 @@
-namespace GarageBooking.Orm.Entities;
+namespace GarageBooking.Entities;
 
 public class Role
 {
