@@ -1,5 +1,4 @@
 using GarageBooking.Persistence;
-using GarageBooking.Services.GarageEvent;
 using NHibernate;
 using Scalar.AspNetCore;
 
@@ -15,15 +14,15 @@ builder.Services.AddScoped(factory =>
     return sessionFactory.OpenSession();
 });
 
-builder.Services.AddScoped<IGarageEventService, GarageEventService>();
-
-builder.Services.AddDatabaseMigrations(connectionString);
-
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services
+    .AddGarageBookingServices()
+    .AddDatabaseMigrations(connectionString)
+    .AddControllers().Services
+    .AddOpenApi();
 
 var app = builder.Build();
-// MigrationSetup.ApplyMigrations(app.Services);
+
+MigrationSetup.ApplyMigrations(app.Services);
 
 if (app.Environment.IsDevelopment())
 {
@@ -34,6 +33,5 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
 
 app.Run();

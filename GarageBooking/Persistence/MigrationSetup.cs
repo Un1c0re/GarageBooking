@@ -1,4 +1,6 @@
 using FluentMigrator.Runner;
+using GarageBooking.Maps;
+using GarageBooking.Migrations;
 
 namespace GarageBooking.Persistence;
 
@@ -10,7 +12,8 @@ public static class MigrationSetup
             .ConfigureRunner(rb => rb
                 .AddPostgres()
                 .WithGlobalConnectionString(connectionString)
-                .ScanIn(typeof(MigrationSetup).Assembly).For.Migrations())
+                .ScanIn(typeof(RoleMap).Assembly)
+                .ScanIn(typeof(InitialMigration).Assembly).For.Migrations())
             .AddLogging(lb => lb.AddFluentMigratorConsole());
 
         return services;
