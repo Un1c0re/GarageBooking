@@ -1,8 +1,9 @@
+using GarageBooking.Entities;
+
 namespace GarageBooking.Services.User;
 
 public interface IUserService
 {
-    Task<Models.User> GetUserAsync(string email);
-
-    Task<Models.User> SaveUserAsync(Models.User user);
+    Task<UserEntity?> GetUserAsync(string email);
+    Task SaveUserAsync(UserEntity user);
 }

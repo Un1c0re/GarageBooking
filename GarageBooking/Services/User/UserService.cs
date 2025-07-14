@@ -1,45 +1,26 @@
-using GarageBooking.Extensions;
-using NHibernate;
-using NHibernate.Linq;
+using GarageBooking.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace GarageBooking.Services.User;
 
 public class UserService : IUserService
 {
-    private ISessionFactory _sessionFactory;
+    private readonly GarageDbContext _db;
 
-    public UserService(ISessionFactory sessionFactory)
+    public UserService(GarageDbContext db)
     {
-        _sessionFactory = sessionFactory;
+        _db = db;
     }
 
-    public async Task<Models.User> GetUserAsync(string email)
+    public async Task<UserEntity?> GetUserAsync(string email)
     {
-        using var session = _sessionFactory.OpenSession();
-
-        var user = await session.Query<Entities.User>()
-            .SingleOrDefaultAsync(x => x.Email == email);
-
-        return user.ToModel();
+        return await _db.Users
+            .FirstOrDefaultAsync(u => u.Email == email);
     }
 
-    public async Task<Models.User> SaveUserAsync(Models.User model)
+    public async Task SaveUserAsync(UserEntity user)
     {
-        using var session = _sessionFactory.OpenSession();
-        using var transaction = session.BeginTransaction();
-
-        var entity = model.Id != default
-            ? await session.GetAsync<Entities.User>(model.Id)
-            : new Entities.User();
-
-        entity.Name = model.Name;
-        entity.Email = model.Email;
-        entity.Password = model.Password;
-        entity.Role = model.Role.ToEntity();
-
-        await session.SaveOrUpdateAsync(entity);
-        await transaction.CommitAsync();
-
-        return entity.ToModel();
+        _db.Users.Add(user);
+        await _db.SaveChangesAsync();
     }
 }

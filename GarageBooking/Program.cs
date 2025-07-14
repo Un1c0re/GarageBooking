@@ -1,28 +1,48 @@
-using GarageBooking.Persistence;
-using NHibernate;
+using GarageBooking;
+using GarageBooking.Extensions;
+using GarageBooking.Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("Default") 
+var connectionString = builder.Configuration.GetConnectionString("db")
                        ?? "Host=postgres;Port=5432;Database=garagedb;Username=admin;Password=admin";
 
-builder.Services.AddSingleton<ISessionFactory>(_ => SessionFactoryBuilder.CreateSessionFactory(connectionString));
-builder.Services.AddScoped(factory =>
+builder.Services.AddDbContext<GarageDbContext>(opt =>
 {
-    var sessionFactory = factory.GetRequiredService<ISessionFactory>();
-    return sessionFactory.OpenSession();
+    opt.UseNpgsql(connectionString,
+        npg => npg.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+
+    if (builder.Environment.IsDevelopment())
+    {
+        opt.EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
+    }
 });
 
+builder.Services.AddGarageServices();
+
+
 builder.Services
-    .AddGarageBookingServices()
-    .AddDatabaseMigrations(connectionString)
-    .AddControllers().Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/login";
+        options.AccessDeniedPath = "/denied";
+    });
+
+builder.Services.AddAuthorization();
+
+builder.Services
+    .AddControllers()
+    .Services
     .AddOpenApi();
 
 var app = builder.Build();
 
-MigrationSetup.ApplyMigrations(app.Services);
+MigrationRunner.ApplyMigrations(app);
 
 if (app.Environment.IsDevelopment())
 {
@@ -31,6 +51,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
