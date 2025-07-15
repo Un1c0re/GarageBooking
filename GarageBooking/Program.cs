@@ -1,6 +1,4 @@
-using GarageBooking;
-using GarageBooking.Extensions;
-using GarageBooking.Infrastructure;
+using GarageBooking.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;

@@ -1,4 +1,4 @@
-using GarageBooking.Entities;
+using GarageBooking.Persistence.Entities;
 
 namespace GarageBooking.Services.User;
 

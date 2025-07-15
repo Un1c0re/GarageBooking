@@ -1,26 +1,26 @@
-using GarageBooking.Entities;
+using GarageBooking.Persistence;
+using GarageBooking.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace GarageBooking.Services.User;
 
 public class UserService : IUserService
 {
-    private readonly GarageDbContext _db;
+    private readonly GarageDbContext _dbContext;
 
-    public UserService(GarageDbContext db)
+    public UserService(GarageDbContext dbContext)
     {
-        _db = db;
+        _dbContext = dbContext;
     }
 
     public async Task<UserEntity?> GetUserAsync(string email)
     {
-        return await _db.Users
-            .FirstOrDefaultAsync(u => u.Email == email);
+        return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public async Task SaveUserAsync(UserEntity user)
     {
-        _db.Users.Add(user);
-        await _db.SaveChangesAsync();
+        _dbContext.Users.Add(user);
+        await _dbContext.SaveChangesAsync();
     }
 }

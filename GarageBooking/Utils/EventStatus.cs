@@ -1,8 +1,9 @@
 namespace GarageBooking.Utils;
 
-public enum BookingEventStatus
+public enum EventStatus
 {
     Pending,
+    Denied,
     Approved,
-    Denied
+    Payed,
 }

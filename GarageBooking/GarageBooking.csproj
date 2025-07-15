@@ -45,8 +45,4 @@
       <_ContentIncludedByDefault Remove="publish\GarageBooking.Api.staticwebassets.endpoints.json" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Services\GarageEvent\" />
-    </ItemGroup>
-
 </Project>

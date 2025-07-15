@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace GarageBooking.Infrastructure;
+namespace GarageBooking.Persistence;
 
 public static class MigrationRunner
 {

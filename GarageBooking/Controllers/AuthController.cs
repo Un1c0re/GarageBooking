@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using GarageBooking.Entities;
+using GarageBooking.Persistence.Entities;
 using GarageBooking.Services.User;
 using GarageBooking.Utils;
 using Microsoft.AspNetCore.Authentication;

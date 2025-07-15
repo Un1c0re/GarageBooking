@@ -1,8 +1,8 @@
-using GarageBooking.Entities;
+using GarageBooking.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace GarageBooking.Configurations;
+namespace GarageBooking.Persistence.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 {
