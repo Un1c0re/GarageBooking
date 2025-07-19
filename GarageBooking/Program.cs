@@ -22,16 +22,7 @@ builder.Services.AddDbContext<GarageDbContext>(opt =>
 
 builder.Services.AddGarageServices();
 
-
-builder.Services
-    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/login";
-        options.AccessDeniedPath = "/denied";
-    });
-
-builder.Services.AddAuthorization();
+builder.Services.AddGarageAuth(builder.Configuration);
 
 builder.Services
     .AddControllers()
