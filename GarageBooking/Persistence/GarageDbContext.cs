@@ -15,8 +15,5 @@ public class GarageDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
-
-        modelBuilder.Entity<EventEntity>()
-            .HasQueryFilter(e => !EF.Property<bool>(e, "IsDeleted"));
     }
 }
