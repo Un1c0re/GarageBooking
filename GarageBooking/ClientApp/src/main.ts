@@ -1,9 +1,10 @@
 import "./style.css";
-import "./style.css";
 import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+import dayjs from "dayjs";
+import updateLocale from "dayjs/plugin/updateLocale";
 import ElementPlus from "element-plus";
 import ru from "element-plus/es/locale/lang/ru";
 import { createPinia } from "pinia";
@@ -13,8 +14,16 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 
+dayjs.extend(updateLocale);
+
+dayjs.updateLocale("ru", {
+  formats: {
+    L: "DD.MM.YYYY",
+  },
+});
+
 const plugin = storePlugin({
-  stores: ["CardStore"],
+  stores: ["EventStore"],
   storage: localStorage,
 });
 

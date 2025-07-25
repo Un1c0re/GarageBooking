@@ -1,24 +1,14 @@
 <template>
-  <main :style="{ 'margin-bottom': footerHeight + 'px' }">
+  <main>
     <router-view />
   </main>
-  <footer ref="footer"></footer>
 </template>
+<script lang="ts" setup>
+import { createEventsServicePlugin } from "@schedule-x/events-service";
+import { provide } from "vue";
 
-<script setup lang="ts">
-import { useElementSize } from "@vueuse/core";
-import { ref } from "vue";
+import { useDrawer } from "@/composables/useDrawer.js";
 
-const footer = ref();
-
-const { height: footerHeight } = useElementSize(footer);
+provide("drawer", useDrawer());
+provide("eventService", createEventsServicePlugin());
 </script>
-
-<style scoped>
-footer {
-  height: 8vh;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-}
-</style>

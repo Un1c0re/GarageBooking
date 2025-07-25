@@ -1,8 +1,11 @@
-<script setup lang="ts"></script>
-
 <template>
-  <el-empty />
-  <el-button type="primary">Бол</el-button>
+  <TheEventsCalendar />
+  <EventEditor />
 </template>
+
+<script setup lang="ts">
+import EventEditor from "@/components/EventEditor.vue";
+import TheEventsCalendar from "@/views/TheEventsCalendar.vue";
+</script>
 
 <style scoped></style>
