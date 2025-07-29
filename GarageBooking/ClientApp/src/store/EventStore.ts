@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
-import _ from "lodash";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 import GarageEvent from "@/models/GarageEvent";
+import { Time } from "@/models/Time";
 
 export const useEventStore = defineStore("EventStore", () => {
   const events = ref<GarageEvent[]>([]);
@@ -12,27 +12,44 @@ export const useEventStore = defineStore("EventStore", () => {
     events.value = [];
   }
 
+  const constructedEvents = computed(() => {
+    return events.value.map((e) => new GarageEvent(e));
+  });
+
   const getEventById = (id: number) => {
-    return events.value.find((x) => x.id == id);
+    const eventById = events.value.find((x) => x.id == id);
+    if (eventById != undefined) {
+      return new GarageEvent(eventById);
+    }
   };
 
   const getEventsBySameDate = (targetDate: Date | dayjs.Dayjs) => {
     const targetDateDayjs = dayjs(targetDate);
 
-    return events.value.filter((event: GarageEvent) =>
+    return constructedEvents.value.filter((event: GarageEvent) =>
       dayjs(event.date).isSame(targetDateDayjs, "day"),
     );
   };
 
-  const getMaxTimeByDay = (targetDate: Date | dayjs.Dayjs) => {
-    const events = getEventsBySameDate(targetDate);
-    const eventWithMaxStartDate = _.maxBy(events, (e) => e.endDate);
+  const getTimesByDay = (targetDate: Date | dayjs.Dayjs): Array<Array<Time>> => {
+    const eventsWithSameDate = getEventsBySameDate(targetDate);
+    if (eventsWithSameDate == undefined) return [];
 
-    if (eventWithMaxStartDate) {
-      return dayjs(eventWithMaxStartDate.endDate).format("HH:mm:");
-    }
-
-    return null;
+    let result: Array<Array<Time>> = [];
+    eventsWithSameDate.map((e) => {
+      if (!e.startTime || !e.endTime) return null;
+      result.push([
+        {
+          hour: e.startTime.split(":")[0],
+          minutes: e.startTime.split(":")[1],
+        } as Time,
+        {
+          hour: e.endTime.split(":")[0],
+          minutes: e.endTime.split(":")[1],
+        } as Time,
+      ]);
+    });
+    return result;
   };
 
   const setEvents = (value: GarageEvent[]) => {
@@ -51,14 +68,17 @@ export const useEventStore = defineStore("EventStore", () => {
   };
 
   const deleteEvent = (eventId: number) => {
-    events.value.splice(eventId, 1);
+    const index = events.value.findIndex((e) => e.id == eventId);
+    if (index < 0) return;
+
+    events.value.splice(index, 1);
   };
 
   return {
     $reset,
     events,
     getEventById,
-    getMaxTimeByDay,
+    getTimesByDay,
     setEvents,
     addEvent,
     updateEvent,

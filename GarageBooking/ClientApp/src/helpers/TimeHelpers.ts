@@ -1,24 +1,20 @@
-export default {
-  incrementTime: (time: string) => {
-    const splitTime = time.split(":");
-    const hours = splitTime[0];
-    const minutes = splitTime[1];
+import { Time } from "@/models/Time";
 
-    if (minutes.endsWith("30")) {
-      return (Number(hours) + 1).toFixed(1).toString() + ":" + "00";
-    }
+export const toMinutes = (time: Time) => {
+  return Number(time.hour) * 60 + Number(time.minutes);
+};
 
-    return Number(hours) + ":" + "30";
-  },
+export const compareTimes = (time1: string, time2: string) => {
+  const minutes1 = toMinutes(toTime(time1));
+  const minutes2 = toMinutes(toTime(time2));
 
-  decrementTime: (time: string) => {
-    const splitTime = time.split(":");
-    const hours = splitTime[0];
-    const minutes = splitTime[1];
+  return minutes1 < minutes2;
+};
 
-    if (minutes.endsWith("30")) {
-      return Number(hours) + ":" + "00";
-    }
-    return (Number(hours) - 1).toFixed(1).toString() + ":" + "30";
-  },
+export const toTime = (time: string) => {
+  const timeArray = time.split(":");
+  return {
+    hour: timeArray[0],
+    minutes: timeArray[1],
+  };
 };

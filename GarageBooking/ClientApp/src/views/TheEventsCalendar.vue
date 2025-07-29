@@ -13,6 +13,7 @@ import { ScheduleXCalendar } from "@schedule-x/vue";
 import dayjs from "dayjs";
 import { computed, inject, shallowRef } from "vue";
 
+import { UseEventEditorType } from "@/components/EventEditor/composables/useEventEditor";
 import { UseDrawerType } from "@/composables/useDrawer";
 import { EventType } from "@/enums/EventType";
 import GarageEvent from "@/models/GarageEvent";
@@ -20,6 +21,7 @@ import { useEventStore } from "@/store/EventStore";
 
 const drawer = inject("drawer") as UseDrawerType;
 const eventsServicePlugin = inject("eventService") as ReturnType<typeof createEventsServicePlugin>;
+const eventEditor = inject("eventEditor") as UseEventEditorType;
 
 const eventStore = useEventStore();
 
@@ -69,14 +71,14 @@ const handleCreateEvent = (dateTime: string) => {
     eventType: EventType.Booking,
     date: dayjs(dateTime).startOf("day").toDate(),
   });
-  drawer.setEvent(newEvent);
+  eventEditor.setEvent(newEvent);
   drawer.setDrawerVisible(true);
 };
 
 const handleEditEvent = (eventId: number) => {
   const eventToEdit = eventStore.getEventById(Number(eventId));
   if (eventToEdit == undefined) return;
-  drawer.setEvent(eventToEdit);
+  eventEditor.setEvent(eventToEdit);
   drawer.setDrawerVisible(true);
 };
 </script>
