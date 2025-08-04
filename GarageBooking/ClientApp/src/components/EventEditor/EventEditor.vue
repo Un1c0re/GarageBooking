@@ -95,7 +95,7 @@ const handleClose = () => {
 watch(
   () => eventEditor.event.value,
   () => {
-    if (eventEditor.event.value == null || eventEditor.event.value.id == 0) return;
+    if (eventEditor.event.value == null) return;
     const event = new GarageEvent(eventEditor.event.value);
 
     form.title = event.title;

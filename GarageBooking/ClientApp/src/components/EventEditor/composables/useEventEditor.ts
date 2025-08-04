@@ -8,6 +8,7 @@ import { toMinutes } from "@/helpers/TimeHelpers";
 import { Form } from "@/models/Form";
 import GarageEvent from "@/models/GarageEvent";
 import { useEventStore } from "@/store/EventStore";
+import { PermanentDisabledTimes } from "@/utils/PermanentDisabledTimes";
 
 export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePlugin>) => {
   const eventStore = useEventStore();
@@ -28,8 +29,14 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
   });
 
   const disabledTimes = computed(() => {
-    if (!event.value) return [];
-    return eventStore.getTimesByDay(event.value!.date);
+    let disabledTimes = [...PermanentDisabledTimes];
+
+    if (event.value) {
+      const tmp = eventStore.getTimesByDay(event.value!.date);
+      disabledTimes = [...disabledTimes, ...tmp];
+    }
+
+    return disabledTimes;
   });
 
   const disabledHours = () => {
@@ -111,7 +118,6 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
       message: "ожидайте проверки админом",
       type: "success",
     });
-
     resetEvent();
   };
 
@@ -123,7 +129,7 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
       calendar.remove(event.value!.id);
 
       ElMessage.success("Заявка удалена");
-      setEvent(null);
+      resetEvent();
     });
   };
 
