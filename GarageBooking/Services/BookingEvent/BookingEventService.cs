@@ -4,7 +4,7 @@ using GarageBooking.Models;
 using GarageBooking.Persistence;
 using GarageBooking.Persistence.Entities;
 using GarageBooking.Utils;
-using NHibernate.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace GarageBooking.Services.BookingEvent;
 

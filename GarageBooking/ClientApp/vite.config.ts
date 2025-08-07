@@ -1,7 +1,7 @@
+import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "url";
 import { defineConfig } from "vite";
-import tailwindcss from "@tailwindcss/vite";
 import VueDevTools from "vite-plugin-vue-devtools";
 
 export default defineConfig({
@@ -18,5 +18,5 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 5173,
-  }
+  },
 });
