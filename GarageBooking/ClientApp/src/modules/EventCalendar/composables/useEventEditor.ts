@@ -7,6 +7,7 @@ import { EventStatus } from "@/enums/EventStatus";
 import { toMinutes } from "@/helpers/TimeHelpers";
 import { Form } from "@/models/Form";
 import GarageEvent from "@/models/GarageEvent";
+import GarageEventService from "@/services/GarageEventService";
 import { useEventStore } from "@/store/EventStore";
 import { PermanentDisabledTimes } from "@/utils/PermanentDisabledTimes";
 
@@ -83,7 +84,7 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
     return disabled;
   };
 
-  const save = (form: Form) => {
+  const save = async (form: Form) => {
     if (event.value == null) return;
 
     const eventToSave = new GarageEvent(event.value);
@@ -91,7 +92,7 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
     const [endHours, endMinutes] = form.endTime.split(":").map(Number);
 
     eventToSave.title = form.title;
-    eventToSave.eventStatus = EventStatus.Pending;
+    eventToSave.status = EventStatus.Pending;
 
     eventToSave.startDate = dayjs(eventToSave.date)
       .set("hour", startHours)
@@ -103,22 +104,33 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
       .set("minute", endMinutes)
       .toDate();
 
-    if (eventToSave.id == 0) {
-      const eventListLength = eventStore.events.length;
-      eventToSave.id = eventListLength == 0 ? 1 : eventStore.events[eventListLength - 1].id + 1;
-      eventStore.addEvent(eventToSave);
-      calendar.add(eventToSave.toCalendarEvent);
-    } else {
-      eventStore.updateEvent(eventToSave);
-      calendar.update(eventToSave.toCalendarEvent);
-    }
+    try {
+      if (eventToSave.id == 0) {
+        // const savedEvent = await GarageEventService.SaveEvent(eventToSave);
+        eventToSave.id = eventStore.events.length + 1;
+        const savedEvent = eventToSave;
 
-    ElNotification.success({
-      title: "Заявка  создана",
-      message: "ожидайте проверки админом",
-      type: "success",
-    });
-    resetEvent();
+        eventStore.addEvent(savedEvent);
+        calendar.add(savedEvent.toCalendarEvent);
+
+        ElNotification.success({
+          title: "Заявка  создана",
+          message: "ожидайте проверки админом",
+          type: "success",
+        });
+      } else {
+        const savedEvent = await GarageEventService.UpdateEvent(eventToSave);
+        eventStore.updateEvent(savedEvent);
+        calendar.update(savedEvent.toCalendarEvent);
+      }
+      resetEvent();
+    } catch (e) {
+      ElNotification.error({
+        title: "Не удалось сохранить заявку",
+        message: `${e}`,
+        type: "error",
+      });
+    }
   };
 
   const remove = () => {

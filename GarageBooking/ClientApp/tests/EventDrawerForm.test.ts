@@ -7,8 +7,8 @@ import { flushPromises, mount } from "@vue/test-utils";
 import ElementPlus from "element-plus";
 import { nextTick } from "vue";
 
-import { useEventEditor } from "@/components/EventEditor/composables/useEventEditor";
-import EventDrawerForm from "@/components/EventEditor/EventEditor.vue";
+import { useEventEditor } from "@/modules/EventCalendar/composables/useEventEditor";
+import EventDrawerForm from "@/modules/EventCalendar/components/EventEditor.vue";
 
 const mockCalendar = createEventsServicePlugin();
 

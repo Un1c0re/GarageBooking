@@ -1,11 +1,19 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
-import TheMain from "@/views/TheMain.vue";
-
 const routes: RouteRecordRaw[] = [
   {
+    path: "/calendar",
+    name: "Calendar",
+    component: () => import("@/views/TheEventCalendarView.vue"),
+  },
+  {
+    path: "/requests",
+    name: "Requests",
+    component: () => import("@/views/TheCabinetRequest.vue"),
+  },
+  {
     path: "/",
-    component: TheMain,
+    redirect: "/calendar",
   },
 ];
 

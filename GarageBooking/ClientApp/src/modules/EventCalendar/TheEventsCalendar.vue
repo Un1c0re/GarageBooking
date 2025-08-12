@@ -1,7 +1,5 @@
 ﻿<template>
-  <div class="flex flex-col items-center">
-    <ScheduleXCalendar :calendar-app="calendarApp" class="h-[90vh] w-[90vw]" />
-  </div>
+  <ScheduleXCalendar :calendar-app="calendarApp" />
 </template>
 
 <script lang="ts" setup>
@@ -13,10 +11,10 @@ import { ScheduleXCalendar } from "@schedule-x/vue";
 import dayjs from "dayjs";
 import { computed, inject, shallowRef } from "vue";
 
-import { UseEventEditorType } from "@/components/EventEditor/composables/useEventEditor";
 import { UseDrawerType } from "@/composables/useDrawer";
 import { EventType } from "@/enums/EventType";
 import GarageEvent from "@/models/GarageEvent";
+import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";
 import { useEventStore } from "@/store/EventStore";
 
 const drawer = inject("drawer") as UseDrawerType;
@@ -35,7 +33,7 @@ const calendarApp = shallowRef(
     plugins: [eventsServicePlugin],
 
     dayBoundaries: {
-      start: "06:00",
+      start: "08:00",
       end: "24:00",
     },
 
@@ -85,7 +83,7 @@ const handleEditEvent = (eventId: number) => {
 
 <style>
 .sx__week-grid {
-  --sx-week-grid-height: 720px;
+  --sx-week-grid-height: 640px;
 }
 
 .sx__week-grid__hour {
