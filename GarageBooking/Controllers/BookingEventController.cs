@@ -51,7 +51,7 @@ public class BookingEventController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(long id)
     {
         try
         {

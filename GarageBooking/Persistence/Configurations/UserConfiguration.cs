@@ -12,7 +12,7 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 
         b.HasKey(u => u.Id);
         b.Property(u => u.Id)
-            .HasDefaultValueSql("gen_random_uuid()");
+            .ValueGeneratedOnAdd();
 
         b.Property(u => u.Role)
             .HasConversion<int>();

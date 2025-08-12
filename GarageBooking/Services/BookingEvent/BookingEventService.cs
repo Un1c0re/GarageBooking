@@ -67,7 +67,7 @@ public class BookingEventService : IBookingEventService
         return model;
     }
 
-    public async Task<BookingEventModel> DeleteBookingEventAsync(Guid eventId)
+    public async Task<BookingEventModel> DeleteBookingEventAsync(long eventId)
     {
         var entity = await _dbContext.Events.SingleOrDefaultAsync(x => x.Id == eventId);
         if (entity == null)
