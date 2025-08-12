@@ -1,12 +1,10 @@
 using GarageBooking.Persistence;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("db")
-                       ?? "Host=postgres;Port=5432;Database=garagedb;Username=admin;Password=admin";
+var connectionString = builder.Configuration.GetConnectionString("Default");
 
 builder.Services.AddDbContext<GarageDbContext>(opt =>
 {
@@ -22,10 +20,14 @@ builder.Services.AddDbContext<GarageDbContext>(opt =>
 
 builder.Services.AddGarageServices();
 
-builder.Services.AddGarageAuth(builder.Configuration);
+// builder.Services.AddGarageAuth(builder.Configuration);
 
 builder.Services
     .AddControllers()
+    .AddJsonOptions(options => 
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    })
     .Services
     .AddOpenApi();
 
