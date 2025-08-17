@@ -9,7 +9,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/requests",
     name: "Requests",
-    component: () => import("@/views/TheCabinetRequest.vue"),
+    component: () => import("@/views/TheRequestView.vue"),
   },
   {
     path: "/",

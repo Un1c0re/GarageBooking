@@ -8,7 +8,7 @@ import ElementPlus from "element-plus";
 import { nextTick } from "vue";
 
 import { useEventEditor } from "@/modules/EventCalendar/composables/useEventEditor";
-import EventDrawerForm from "@/modules/EventCalendar/components/EventEditor.vue";
+import EventDrawerForm from "@/modules/EventCalendar/EventEditor.vue";
 
 const mockCalendar = createEventsServicePlugin();
 

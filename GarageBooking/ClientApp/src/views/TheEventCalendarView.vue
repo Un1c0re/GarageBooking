@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import EventEditor from "@/modules/EventCalendar/components/EventEditor.vue";
-import TheEventsCalendar from "@/modules/EventCalendar/TheEventsCalendar.vue";
+import EventEditor from "@/modules/EventCalendar/EventEditor.vue";
+import TheEventsCalendar from "@/modules/EventCalendar/EventsCalendar.vue";
 </script>
 
 <template>

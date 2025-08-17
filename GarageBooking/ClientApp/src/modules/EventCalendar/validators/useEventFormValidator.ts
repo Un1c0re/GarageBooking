@@ -1,6 +1,6 @@
 import { FormRules } from "element-plus";
 
-import { compareTimes } from "@/helpers/TimeHelpers";
+import { compareTimes } from "@/modules/EventCalendar/helpers/TimeHelpers";
 import { Form } from "@/models/Form";
 import { Time } from "@/models/Time";
 

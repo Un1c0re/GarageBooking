@@ -61,7 +61,7 @@
 import { FormInstance } from "element-plus";
 import { computed, inject, reactive, ref, watch } from "vue";
 
-import { UseDrawerType } from "@/composables/useDrawer";
+import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
 import { Form } from "@/models/Form";
 import GarageEvent from "@/models/GarageEvent";
 import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";

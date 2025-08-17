@@ -11,7 +11,7 @@ import { ScheduleXCalendar } from "@schedule-x/vue";
 import dayjs from "dayjs";
 import { computed, inject, shallowRef } from "vue";
 
-import { UseDrawerType } from "@/composables/useDrawer";
+import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
 import { EventType } from "@/enums/EventType";
 import GarageEvent from "@/models/GarageEvent";
 import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";

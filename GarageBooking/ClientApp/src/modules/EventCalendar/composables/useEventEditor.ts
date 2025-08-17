@@ -4,12 +4,12 @@ import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
 import { computed, ref } from "vue";
 
 import { EventStatus } from "@/enums/EventStatus";
-import { toMinutes } from "@/helpers/TimeHelpers";
+import { toMinutes } from "@/modules/EventCalendar/helpers/TimeHelpers";
 import { Form } from "@/models/Form";
 import GarageEvent from "@/models/GarageEvent";
 import GarageEventService from "@/services/GarageEventService";
 import { useEventStore } from "@/store/EventStore";
-import { PermanentDisabledTimes } from "@/utils/PermanentDisabledTimes";
+import { PermanentDisabledTimes } from "@/modules/EventCalendar/utils/PermanentDisabledTimes";
 
 export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePlugin>) => {
   const eventStore = useEventStore();
