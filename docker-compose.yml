@@ -7,13 +7,14 @@ services:
       POSTGRES_PASSWORD: admin
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     networks:
       - backend
 
   keycloak:
-    image: quay.io/keycloak/keycloak:24.0.4
+    image: quay.io/keycloak/keycloak:26.0.0
     command: start-dev
     environment:
       KC_DB: postgres
@@ -22,7 +23,7 @@ services:
       KC_DB_URL_DATABASE: garagedb
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: admin
-      
+
       KC_DB_SCHEMA: keycloak
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin

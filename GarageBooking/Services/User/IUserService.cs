@@ -1,9 +1,9 @@
-using GarageBooking.Persistence.Entities;
+using GarageBooking.Models;
 
 namespace GarageBooking.Services.User;
 
 public interface IUserService
 {
-    Task<UserEntity?> GetUserAsync(string email);
-    Task SaveUserAsync(UserEntity user);
+    Task<UserModel?> GetUserAsync(string keycloakId);
+    Task<UserModel> SaveUserAsync(UserModel user);
 }

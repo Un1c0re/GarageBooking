@@ -1,7 +1,7 @@
 using GarageBooking.Services.BookingEvent;
 using GarageBooking.Services.User;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace GarageBooking.Persistence;
 
@@ -17,35 +17,27 @@ public static class ServiceCollectionExtensions
     
     public static IServiceCollection AddGarageAuth(this IServiceCollection services, IConfiguration cfg)
     {
-        var section = cfg.GetSection("Auth");
-
         services.AddAuthentication(options =>
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = "oidc";
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddCookie()
-            .AddOpenIdConnect("oidc", options =>
+            .AddJwtBearer(options =>
             {
-                options.Authority = section["Authority"];
-                options.ClientId = section["ClientId"];
-                options.ClientSecret = section["ClientSecret"];
-                options.ResponseType = section["ResponseType"] ?? "code";
-
-                options.SaveTokens = true;
-                options.GetClaimsFromUserInfoEndpoint = true;
-
-                options.Scope.Add("roles");
+                options.Authority = "http://localhost:8081/realms/Garage-net";
+                options.Audience = "account";
+                options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    RoleClaimType = "role"
+                    ValidateAudience = true,
+                    ValidateIssuer = true
                 };
             });
 
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("AdminOnly", p =>
-                p.RequireRole("admin"));
+            options.AddPolicy("ProOnly", policy => policy.RequireRole("pro"));
+            options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
         });
 
         return services;

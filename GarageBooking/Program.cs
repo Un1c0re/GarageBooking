@@ -20,7 +20,7 @@ builder.Services.AddDbContext<GarageDbContext>(opt =>
 
 builder.Services.AddGarageServices();
 
-// builder.Services.AddGarageAuth(builder.Configuration);
+builder.Services.AddGarageAuth(builder.Configuration);
 
 builder.Services
     .AddControllers()
@@ -45,5 +45,17 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+app.MapGet("/secured", (HttpContext context) =>
+{
+    var user = context.User.Identity?.Name ?? "Anonymous";
+    return $"Hello {user}, you are authenticated!";
+}).RequireAuthorization();
+
+app.MapGet("/admin", () => "Only admin can see this")
+    .RequireAuthorization("AdminOnly");
+
+app.MapGet("/pro", () => "Only pro can see this")
+    .RequireAuthorization("ProOnly");
 
 app.Run();

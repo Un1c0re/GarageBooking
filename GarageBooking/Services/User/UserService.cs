@@ -1,3 +1,5 @@
+using GarageBooking.Maps;
+using GarageBooking.Models;
 using GarageBooking.Persistence;
 using GarageBooking.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -13,14 +15,26 @@ public class UserService : IUserService
         _dbContext = dbContext;
     }
 
-    public async Task<UserEntity?> GetUserAsync(string email)
+    public async Task<UserModel?> GetUserAsync(string keycloakId)
     {
-        return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+        var entity = await _dbContext.Users.SingleOrDefaultAsync(u => u.KeycloakId == keycloakId);
+
+        return entity?.ToModel();
     }
 
-    public async Task SaveUserAsync(UserEntity user)
+    public async Task<UserModel> SaveUserAsync(UserModel model)
     {
-        _dbContext.Users.Add(user);
+        var entity = new UserEntity
+        {
+            Name = model.Name,
+            Email = model.Email,
+            Role = model.Role,
+            KeycloakId = model.KeycloakId,
+        };
+
+        _dbContext.Users.Add(entity);
         await _dbContext.SaveChangesAsync();
+
+        return entity.ToModel();
     }
 }
