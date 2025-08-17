@@ -1,14 +1,19 @@
 <template>
   <el-drawer
     v-model="drawer.visible.value"
-    :title="eventEditor.title.value"
     direction="rtl"
     size="36%"
     header-class="text-left"
     :before-close="handleClose"
   >
+    <template #header>
+      <div class="flex flex-col">
+        <p class="text-xl font-semibold">{{ eventEditor.title.value }}</p>
+        <p>Тестов тест тестович</p>
+      </div>
+    </template>
     <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
-      <el-form-item label="Заголовок" prop="title">
+      <el-form-item label="Название" prop="title">
         <el-input v-model="form.title" />
       </el-form-item>
       <el-form-item label="Время" required>
@@ -24,7 +29,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="2">
-          <p class="text-gray-500">-</p>
+          <p class="text-center text-gray-500">-</p>
         </el-col>
         <el-col :span="11">
           <el-form-item prop="endTime">
@@ -38,6 +43,7 @@
           </el-form-item>
         </el-col>
       </el-form-item>
+      <el-form-item />
       <el-form-item>
         <el-button type="primary" @click="handleSubmit">Подтвердить</el-button>
         <el-button
@@ -55,11 +61,11 @@
 import { FormInstance } from "element-plus";
 import { computed, inject, reactive, ref, watch } from "vue";
 
-import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";
-import { getFormRules } from "@/modules/EventCalendar/validators/useEventFormValidator";
 import { UseDrawerType } from "@/composables/useDrawer";
 import { Form } from "@/models/Form";
 import GarageEvent from "@/models/GarageEvent";
+import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";
+import { getFormRules } from "@/modules/EventCalendar/validators/useEventFormValidator";
 
 const drawer = inject("drawer") as UseDrawerType;
 const eventEditor = inject("eventEditor") as UseEventEditorType;
@@ -99,8 +105,14 @@ watch(
     const event = new GarageEvent(eventEditor.event.value);
 
     form.title = event.title;
-    form.startTime = event.startTime;
-    form.endTime = event.endTime;
+
+    if (eventEditor.event.value.id != 0) {
+      form.startTime = event.startTime;
+      form.endTime = event.endTime;
+    } else {
+      form.startTime = "";
+      form.endTime = "";
+    }
   },
 );
 </script>

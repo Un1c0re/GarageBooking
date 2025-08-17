@@ -33,8 +33,16 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
     let disabledTimes = [...PermanentDisabledTimes];
 
     if (event.value) {
-      const tmp = eventStore.getTimesByDay(event.value!.date);
-      disabledTimes = [...disabledTimes, ...tmp];
+      let busyPeriods = eventStore.getTimesByDay(event.value!.date);
+
+      busyPeriods = busyPeriods.filter((t) => {
+        const startTime = `${t[0].hour}:${t[0].minutes}`;
+        const endTime = `${t[1].hour}:${t[1].minutes}`;
+
+        return event.value!.startTime != startTime && event.value!.endTime != endTime;
+      });
+
+      disabledTimes = [...disabledTimes, ...busyPeriods];
     }
 
     return disabledTimes;

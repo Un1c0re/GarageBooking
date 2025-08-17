@@ -20,8 +20,8 @@ export const validateTimeRange = (
       return callback(
         new Error(
           field1 === "startTime"
-            ? "Время начала должно быть раньше времени окончания"
-            : "Время окончания должно быть позже времени начала",
+            ? "Начало должно быть раньше окончания"
+            : "окончание должно быть позже начала",
         ),
       );
     }
@@ -44,7 +44,7 @@ export const validateTimeRange = (
 export const getFormRules = (form: Form, busyRanges: Time[][]): FormRules<Form> => ({
   title: [
     { required: true, message: "Пожалуйста, заполните поле", trigger: "blur" },
-    { min: 3, max: 16, message: "Длина поля должна быть от 3 до 16 символов", trigger: "blur" },
+    { min: 3, max: 16, message: "Название должна быть от 3 до 16 символов", trigger: "blur" },
   ],
   startTime: [
     { type: "string", required: true, message: "Выберите время начала", trigger: "change" },
