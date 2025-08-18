@@ -52,6 +52,7 @@ export default defineConfig([
       ...pluginVue.configs["flat/recommended"].rules,
       "prettier/prettier": "error",
       ...prettier.rules,
+      "vue/jsx-uses-vars": "error",
     },
   },
 
