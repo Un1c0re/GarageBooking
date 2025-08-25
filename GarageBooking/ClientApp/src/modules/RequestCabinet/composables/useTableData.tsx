@@ -36,8 +36,8 @@ export const useTableData = () => {
       },
     },
     {
-      key: "title",
-      dataKey: "title",
+      key: "eventTitle",
+      dataKey: "eventTitle",
       title: "Название",
       width: 1,
       style: columnStyles,
@@ -46,8 +46,8 @@ export const useTableData = () => {
       },
     },
     {
-      key: "date",
-      dataKey: "date",
+      key: "EventDate",
+      dataKey: "EventDate",
       title: "Дата",
       width: 1,
       style: columnStyles,
@@ -57,27 +57,27 @@ export const useTableData = () => {
       },
     },
     {
-      key: "timeRange",
-      dataKey: "timeRange",
+      key: "eventTimeRange",
+      dataKey: "eventTimeRange",
       title: "Время",
       width: 1,
       style: columnStyles,
       cellRenderer: ({ cellData }) => {
-        const endTime = dayjs(cellData).format("HH:mm");
-        return <span>{endTime}</span>;
+        const time = cellData.join(" - ");
+        return <span>{time}</span>;
       },
     },
     {
-      key: "approve",
-      dataKey: "approve",
+      key: "action",
+      dataKey: "action",
       title: "Действие",
       width: 1,
       style: columnStyles,
       cellRenderer: ({ cellData }) => {
         return (
           <div>
-            <ElButton type={"success"}>подтверить</ElButton>;
-            <ElButton type={"danger"}>отклонить</ElButton>;
+            <ElButton type={"success"}>Подтвердить</ElButton>
+            <ElButton type={"danger"}>Отклонить</ElButton>
           </div>
         );
       },

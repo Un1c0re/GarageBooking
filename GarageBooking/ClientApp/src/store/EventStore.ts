@@ -12,7 +12,7 @@ export const useEventStore = defineStore("EventStore", () => {
     events.value = [];
   }
 
-  const constructedEvents = computed(() => {
+  const garageEvents = computed(() => {
     return events.value.map((e) => new GarageEvent(e));
   });
 
@@ -26,9 +26,7 @@ export const useEventStore = defineStore("EventStore", () => {
   const getEventsBySameDate = (targetDate: Date | dayjs.Dayjs) => {
     const targetDateDayjs = dayjs(targetDate);
 
-    return constructedEvents.value.filter((event: GarageEvent) =>
-      dayjs(event.date).isSame(targetDateDayjs, "day"),
-    );
+    return garageEvents.value.filter((event: GarageEvent) => dayjs(event.date).isSame(targetDateDayjs, "day"));
   };
 
   const getTimesByDay = (targetDate: Date | dayjs.Dayjs): Array<Array<Time>> => {
@@ -77,6 +75,7 @@ export const useEventStore = defineStore("EventStore", () => {
   return {
     $reset,
     events,
+    garageEvents,
     getEventById,
     getTimesByDay,
     setEvents,

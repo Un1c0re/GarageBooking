@@ -11,9 +11,8 @@ import { ScheduleXCalendar } from "@schedule-x/vue";
 import dayjs from "dayjs";
 import { computed, inject, shallowRef } from "vue";
 
-import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
-import { EventType } from "@/enums/EventType";
 import GarageEvent from "@/models/GarageEvent";
+import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
 import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";
 import { useEventStore } from "@/store/EventStore";
 
@@ -67,7 +66,6 @@ const calendarApp = shallowRef(
 
 const handleCreateEvent = (dateTime: string) => {
   const newEvent = new GarageEvent({
-    eventType: EventType.Booking,
     date: dayjs(dateTime).startOf("day").toDate(),
   });
   eventEditor.setEvent(newEvent);
@@ -77,6 +75,7 @@ const handleCreateEvent = (dateTime: string) => {
 const handleEditEvent = (eventId: number) => {
   const eventToEdit = eventStore.getEventById(Number(eventId));
   if (eventToEdit == undefined) return;
+
   eventEditor.setEvent(eventToEdit);
   drawer.setDrawerVisible(true);
 };
