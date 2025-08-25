@@ -1,15 +1,12 @@
 using System.Security.Claims;
 using GarageBooking.Contracts;
 using GarageBooking.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GarageBooking.Controllers;
 
-[Authorize]
-[ApiController]
-[Route("api/[controller]")]
-public class AccountController : ControllerBase
+
+public class AccountController : ApiControllerBase
 {
     private readonly IUserService _userService;
 

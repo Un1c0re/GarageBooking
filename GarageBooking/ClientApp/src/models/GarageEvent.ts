@@ -11,7 +11,7 @@ export default class GarageEvent {
     this.startDate = options.startDate ?? new Date();
     this.endDate = options.endDate ?? new Date();
     this.date = options.date ?? new Date();
-    this.user = new User(options.user!);
+    this.user = options.user ? new User(options.user) : new User({});
   }
 
   id: number;

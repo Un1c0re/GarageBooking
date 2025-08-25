@@ -4,22 +4,25 @@ import { computed, ref } from "vue";
 import User from "@/models/User";
 
 export const useUserStore = defineStore("UserStore", () => {
-  const user = ref<User | null>(null);
-
+  const user = ref<User>();
   const isAuthenticated = computed(() => !!user.value);
 
   function $reset() {
-    user.value = null;
+    user.value = undefined;
   }
 
-  const SetUser = (newUser: User | null) => {
+  const GetUser = () => {
+    return new User(user.value!);
+  };
+
+  const SetUser = (newUser: User) => {
     user.value = newUser;
   };
 
   return {
-    user,
     isAuthenticated,
     $reset,
+    GetUser,
     SetUser,
   };
 });

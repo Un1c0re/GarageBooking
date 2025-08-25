@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import keycloak from "@/keycloack";
+import keycloak from "@/services/Identity/Keycloack";
 
 const getCurrentUser = async () => {
   if (!keycloak.token) return null;

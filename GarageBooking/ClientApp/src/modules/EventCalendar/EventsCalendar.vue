@@ -15,12 +15,14 @@ import GarageEvent from "@/models/GarageEvent";
 import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
 import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";
 import { useEventStore } from "@/store/EventStore";
+import { useUserStore } from "@/store/UserStore";
 
 const drawer = inject("drawer") as UseDrawerType;
 const eventsServicePlugin = inject("eventService") as ReturnType<typeof createEventsServicePlugin>;
 const eventEditor = inject("eventEditor") as UseEventEditorType;
 
 const eventStore = useEventStore();
+const userStore = useUserStore();
 
 const eventList = computed(() => eventStore.events);
 
@@ -67,6 +69,7 @@ const calendarApp = shallowRef(
 const handleCreateEvent = (dateTime: string) => {
   const newEvent = new GarageEvent({
     date: dayjs(dateTime).startOf("day").toDate(),
+    user: userStore.GetUser(),
   });
   eventEditor.setEvent(newEvent);
   drawer.setDrawerVisible(true);

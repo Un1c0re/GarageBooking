@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GarageBooking.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class EventController : ControllerBase
+public class EventController : ApiControllerBase
 {
     private readonly IEventService _service;
 

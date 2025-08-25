@@ -11,7 +11,7 @@ import { createPinia } from "pinia";
 import { storePlugin } from "pinia-plugin-store";
 import { createApp } from "vue";
 
-import keycloak from "@/keycloack";
+import keycloak from "@/services/Identity/Keycloack";
 import UserService from "@/services/UserService";
 import { useUserStore } from "@/store/UserStore";
 

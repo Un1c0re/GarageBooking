@@ -9,7 +9,7 @@
     <template #header>
       <div class="flex flex-col">
         <p class="text-xl font-semibold">{{ eventEditor.title.value }}</p>
-        <p>Тестов тест тестович</p>
+        <p>{{ eventEditor.event.value?.user?.fullName ?? "" }}</p>
       </div>
     </template>
     <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
@@ -61,9 +61,9 @@
 import { FormInstance } from "element-plus";
 import { computed, inject, reactive, ref, watch } from "vue";
 
-import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
 import { Form } from "@/models/Form";
 import GarageEvent from "@/models/GarageEvent";
+import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
 import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";
 import { getFormRules } from "@/modules/EventCalendar/validators/useEventFormValidator";
 

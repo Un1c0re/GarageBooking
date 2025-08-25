@@ -4,12 +4,12 @@ import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
 import { computed, ref } from "vue";
 
 import { EventStatus } from "@/enums/EventStatus";
-import { toMinutes } from "@/modules/EventCalendar/helpers/TimeHelpers";
 import { Form } from "@/models/Form";
 import GarageEvent from "@/models/GarageEvent";
+import { toMinutes } from "@/modules/EventCalendar/helpers/TimeHelpers";
+import { PermanentDisabledTimes } from "@/modules/EventCalendar/utils/PermanentDisabledTimes";
 import GarageEventService from "@/services/GarageEventService";
 import { useEventStore } from "@/store/EventStore";
-import { PermanentDisabledTimes } from "@/modules/EventCalendar/utils/PermanentDisabledTimes";
 
 export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePlugin>) => {
   const eventStore = useEventStore();
@@ -102,21 +102,12 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
     eventToSave.title = form.title;
     eventToSave.status = EventStatus.Pending;
 
-    eventToSave.startDate = dayjs(eventToSave.date)
-      .set("hour", startHours)
-      .set("minute", startMinutes)
-      .toDate();
-
-    eventToSave.endDate = dayjs(eventToSave.date)
-      .set("hour", endHours)
-      .set("minute", endMinutes)
-      .toDate();
+    eventToSave.startDate = dayjs(eventToSave.date).set("hour", startHours).set("minute", startMinutes).toDate();
+    eventToSave.endDate = dayjs(eventToSave.date).set("hour", endHours).set("minute", endMinutes).toDate();
 
     try {
       if (eventToSave.id == 0) {
-        // const savedEvent = await GarageEventService.SaveEvent(eventToSave);
-        eventToSave.id = eventStore.events.length + 1;
-        const savedEvent = eventToSave;
+        const savedEvent = await GarageEventService.SaveEvent(eventToSave);
 
         eventStore.addEvent(savedEvent);
         calendar.add(savedEvent.toCalendarEvent);
