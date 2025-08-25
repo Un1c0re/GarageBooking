@@ -25,17 +25,27 @@
         "./dist/*"
       ]
     },
-    "types": ["element-plus/global", "vitest/globals"]
+    "types": [
+      "element-plus/global",
+      "vite/client",
+      "vitest/globals"
+    ]
   },
   "include": [
     "src/**/*.ts",
-    "src/**/**/*.ts",
     "src/**/*.d.ts",
+    "src/**/*.tsx",
     "src/**/*.vue",
-    "src/**/**/*.vue",
     "tests/*.ts",
     "vite.config.ts",
     "vitest.config.ts"
   ],
-  "exclude": ["node_modules", "dist", "eslint.config.js", "tailwind.config.js"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "eslint.config.js",
+    "tailwind.config.js",
+    ".prettierrc",
+    "babel.config.js"
+  ]
 }

@@ -25,7 +25,13 @@ export default defineConfig([
     },
     rules: {
       ...tseslint.configs.recommended.rules,
-      "prettier/prettier": "error",
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto",
+          printWidth: 120,
+        }
+      ],
       ...prettier.rules,
     },
   },
@@ -50,7 +56,13 @@ export default defineConfig([
     processor: pluginVue.processors[".vue"],
     rules: {
       ...pluginVue.configs["flat/recommended"].rules,
-      "prettier/prettier": "error",
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto",
+          printWidth: 120,
+        }
+      ],
       ...prettier.rules,
       "vue/jsx-uses-vars": "error",
     },
