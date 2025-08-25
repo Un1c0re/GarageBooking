@@ -1,16 +1,16 @@
+using GarageBooking.Contracts;
 using GarageBooking.Models;
-using GarageBooking.Services.BookingEvent;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GarageBooking.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BookingEventController : ControllerBase
+public class EventController : ControllerBase
 {
-    private readonly IBookingEventService _service;
+    private readonly IEventService _service;
 
-    public BookingEventController(IBookingEventService service)
+    public EventController(IEventService service)
     {
         _service = service;
     }
@@ -18,16 +18,16 @@ public class BookingEventController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get(DateTime startDate, DateTime endDate)
     {
-        var result = await _service.GetBookingEventsByPeriodAsync(startDate, endDate);
+        var result = await _service.GetEventsByPeriodAsync(startDate, endDate);
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(BookingEventModel model)
+    public async Task<IActionResult> Create(EventModel model)
     {
         try
         {
-            var result = await _service.CreateBookingEventAsync(model);
+            var result = await _service.CreateEventAsync(model);
             return Ok(result);
         }
         catch (Exception e)
@@ -37,11 +37,11 @@ public class BookingEventController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(BookingEventModel model)
+    public async Task<IActionResult> Update(EventModel model)
     {
         try
         {
-            var result = await _service.UpdateBookingEventAsync(model);
+            var result = await _service.UpdateEventAsync(model);
             return Ok(result);
         }
         catch (Exception e)
@@ -55,7 +55,7 @@ public class BookingEventController : ControllerBase
     {
         try
         {
-            var result = await _service.DeleteBookingEventAsync(id);
+            var result = await _service.DeleteEventAsync(id);
             return Ok(result);
         }
         catch (Exception e)

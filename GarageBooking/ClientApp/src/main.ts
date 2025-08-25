@@ -3,7 +3,6 @@ import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-import axios from "axios";
 import dayjs from "dayjs";
 import updateLocale from "dayjs/plugin/updateLocale";
 import ElementPlus from "element-plus";
@@ -13,6 +12,8 @@ import { storePlugin } from "pinia-plugin-store";
 import { createApp } from "vue";
 
 import keycloak from "@/keycloack";
+import UserService from "@/services/UserService";
+import { useUserStore } from "@/store/UserStore";
 
 import App from "./App.vue";
 import router from "./router";
@@ -26,7 +27,7 @@ dayjs.updateLocale("ru", {
 });
 
 const plugin = storePlugin({
-  stores: ["EventStore"],
+  stores: ["EventStore", "UserStore"],
   storage: localStorage,
 });
 
@@ -44,25 +45,25 @@ app.use(ElementPlus, {
   locale: ru,
 });
 
-keycloak.init({ onLoad: "login-required" }).then(async (authenticated) => {
-  if (!authenticated) {
-    keycloak.login();
-  } else {
-    const response = await axios.get("/api/Account/me", {
-      headers: {
-        Authorization: `Bearer ${keycloak.token}`,
-      },
-    });
-    console.log("User in DB:", response.data);
+keycloak
+  .init({
+    onLoad: "login-required",
+    checkLoginIframe: false,
+    pkceMethod: "S256",
+  })
+  .then(async (authenticated) => {
+    if (!authenticated) {
+      keycloak.login();
+    } else {
+      const userStore = useUserStore();
 
-    setInterval(() => {
-      keycloak.updateToken(70).catch(() => {
-        keycloak.login();
-      });
-    }, 60000);
+      userStore.SetUser(await UserService.getCurrentUser());
 
-    app.provide("keycloak", keycloak);
+      setInterval(() => {
+        keycloak.updateToken(30).catch(() => keycloak.login());
+      }, 20000);
 
-    app.mount("#app");
-  }
-});
+      app.provide("keycloak", keycloak);
+      app.mount("#app");
+    }
+  });

@@ -3,18 +3,18 @@ using GarageBooking.Persistence.Entities;
 
 namespace GarageBooking.Maps;
 
-public static class BookingEventMap
+public static class EventMap
 {
-    public static BookingEventModel ToModel(this EventEntity entity)
+    public static EventModel ToModel(this EventEntity entity)
     {
-        return new BookingEventModel
+        return new EventModel
         {
             Id = entity.Id,
             Title = entity.Title,
             Status = entity.Status,
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
-            UserId = entity.UserId,
+            User = entity.User.ToModel()
         };
     }
 }

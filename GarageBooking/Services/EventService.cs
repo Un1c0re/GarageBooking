@@ -1,4 +1,5 @@
 using System.Data.Entity.Core;
+using GarageBooking.Contracts;
 using GarageBooking.Maps;
 using GarageBooking.Models;
 using GarageBooking.Persistence;
@@ -6,18 +7,18 @@ using GarageBooking.Persistence.Entities;
 using GarageBooking.Utils;
 using Microsoft.EntityFrameworkCore;
 
-namespace GarageBooking.Services.BookingEvent;
+namespace GarageBooking.Services;
 
-public class BookingEventService : IBookingEventService
+public class EventService : IEventService
 {
     private readonly GarageDbContext _dbContext;
 
-    public BookingEventService(GarageDbContext dbContext)
+    public EventService(GarageDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    public async Task<List<BookingEventModel>> GetBookingEventsByPeriodAsync(DateTime startDate, DateTime endDate)
+    public async Task<List<EventModel>> GetEventsByPeriodAsync(DateTime startDate, DateTime endDate)
     {
         var entities = await _dbContext.Events
             .Where(x => x.StartDate >= startDate && x.EndDate <= endDate)
@@ -26,14 +27,14 @@ public class BookingEventService : IBookingEventService
         return entities.Select(e => e.ToModel()).ToList();
     }
 
-    public async Task<BookingEventModel> CreateBookingEventAsync(BookingEventModel model)
+    public async Task<EventModel> CreateEventAsync(EventModel model)
     {
         var entity = new EventEntity
         {
             Title = model.Title,
             StartDate = model.StartDate,
             EndDate = model.EndDate,
-            UserId = model.UserId,
+            UserId = model.User.Id
         };
 
         _dbContext.Events.Add(entity);
@@ -44,7 +45,7 @@ public class BookingEventService : IBookingEventService
         return model;
     }
 
-    public async Task<BookingEventModel> UpdateBookingEventAsync(BookingEventModel model)
+    public async Task<EventModel> UpdateEventAsync(EventModel model)
     {
         var entity = await _dbContext.Events.SingleOrDefaultAsync(x => x.Id == model.Id);
         if (entity == null)
@@ -67,7 +68,7 @@ public class BookingEventService : IBookingEventService
         return model;
     }
 
-    public async Task<BookingEventModel> DeleteBookingEventAsync(long eventId)
+    public async Task<EventModel> DeleteEventAsync(long eventId)
     {
         var entity = await _dbContext.Events.SingleOrDefaultAsync(x => x.Id == eventId);
         if (entity == null)

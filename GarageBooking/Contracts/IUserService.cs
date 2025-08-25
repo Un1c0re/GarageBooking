@@ -1,6 +1,6 @@
 using GarageBooking.Models;
 
-namespace GarageBooking.Services.User;
+namespace GarageBooking.Contracts;
 
 public interface IUserService
 {

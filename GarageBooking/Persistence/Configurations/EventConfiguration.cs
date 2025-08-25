@@ -10,9 +10,6 @@ public class EventConfiguration : IEntityTypeConfiguration<EventEntity>
     {
         b.ToTable("events");
 
-        b.Property(x => x.EventType)
-            .HasConversion<int>();
-
         b.Property(x => x.Status)
             .HasConversion<int>();
 

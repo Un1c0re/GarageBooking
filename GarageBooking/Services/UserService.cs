@@ -1,10 +1,11 @@
+using GarageBooking.Contracts;
 using GarageBooking.Maps;
 using GarageBooking.Models;
 using GarageBooking.Persistence;
 using GarageBooking.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace GarageBooking.Services.User;
+namespace GarageBooking.Services;
 
 public class UserService : IUserService
 {
@@ -26,10 +27,11 @@ public class UserService : IUserService
     {
         var entity = new UserEntity
         {
-            Name = model.Name,
-            Email = model.Email,
-            Role = model.Role,
             KeycloakId = model.KeycloakId,
+            Role = model.Role,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            Email = model.Email
         };
 
         _dbContext.Users.Add(entity);

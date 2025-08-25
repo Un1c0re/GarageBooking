@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 import { EventStatus } from "@/enums/EventStatus";
-import { EventType } from "@/enums/EventType";
+import User from "@/models/User";
 
 export default class GarageEvent {
   constructor(options: Partial<GarageEvent>) {
@@ -11,7 +11,7 @@ export default class GarageEvent {
     this.startDate = options.startDate ?? new Date();
     this.endDate = options.endDate ?? new Date();
     this.date = options.date ?? new Date();
-    this.userId = options.userId ?? 0;
+    this.user = new User(options.user!);
   }
 
   id: number;
@@ -19,7 +19,7 @@ export default class GarageEvent {
   status: EventStatus;
   startDate: Date;
   endDate: Date;
-  userId: number;
+  user: User;
   date: Date;
 
   get startTime() {

@@ -4,5 +4,6 @@ public enum UserRole
 {
     Default,
     Pro,
-    Admin
+    Admin,
+    Blocked
 }

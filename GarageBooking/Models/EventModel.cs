@@ -2,7 +2,7 @@ using GarageBooking.Utils;
 
 namespace GarageBooking.Models;
 
-public class BookingEventModel
+public class EventModel
 {
     public long Id { get; set; }
     public string Title { get; set; }
@@ -11,5 +11,5 @@ public class BookingEventModel
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
 
-    public long UserId { get; set; }
+    public UserModel User { get; set; }
 }

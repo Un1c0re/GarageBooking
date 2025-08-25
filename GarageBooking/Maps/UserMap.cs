@@ -13,7 +13,8 @@ public static class UserMap
             KeycloakId = entity.KeycloakId,
             Role = entity.Role,
             Email = entity.Email,
-            Name = entity.Name,
+            FirstName = entity.FirstName,
+            LastName = entity.LastName
         };
     }
 }

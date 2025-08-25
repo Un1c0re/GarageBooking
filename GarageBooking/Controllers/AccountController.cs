@@ -1,5 +1,6 @@
+using System.Security.Claims;
+using GarageBooking.Contracts;
 using GarageBooking.Models;
-using GarageBooking.Services.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,13 +18,12 @@ public class AccountController : ControllerBase
         _userService = userService;
     }
 
-    [HttpGet("me")]
+    [HttpGet("Me")]
     public async Task<IActionResult> GetMe()
     {
-        var keycloakId = User.FindFirst("sub")?.Value;
-        var email = User.FindFirst("email")?.Value;
+        var keycloakId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        if (keycloakId == null || email == null)
+        if (keycloakId == null)
         {
             return Unauthorized();
         }
@@ -32,10 +32,16 @@ public class AccountController : ControllerBase
 
         if (user == null)
         {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var firstName = User.FindFirst(ClaimTypes.GivenName)?.Value;
+            var lastName = User.FindFirst(ClaimTypes.Surname)?.Value;
+
             user = new UserModel
             {
-                KeycloakId = keycloakId!,
+                KeycloakId = keycloakId,
                 Email = email,
+                FirstName = firstName,
+                LastName = lastName,
             };
 
             user = await _userService.SaveUserAsync(user);

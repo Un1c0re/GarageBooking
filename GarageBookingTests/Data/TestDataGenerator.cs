@@ -15,11 +15,11 @@ public static class TestDataGenerator
         .RuleFor(e => e.UserId, f => f.IndexGlobal + 1)
         .RuleFor(e => e.Status, f => f.PickRandom<EventStatus>());
 
-    public static Faker<BookingEventModel> BookingEventModelFaker => new Faker<BookingEventModel>()
+    public static Faker<EventModel> BookingEventModelFaker => new Faker<EventModel>()
         .RuleFor(e => e.Id, f => f.IndexGlobal + 1)
         .RuleFor(e => e.Title, f => f.Lorem.Sentence(2))
         .RuleFor(e => e.StartDate, f => f.Date.Soon())
         .RuleFor(e => e.EndDate, (f, e) => e.StartDate.AddHours(2))
-        .RuleFor(e => e.UserId, f => f.IndexGlobal + 1)
+        .RuleFor(e => e.User, f => new UserModel { Id = f.IndexGlobal + 1 })
         .RuleFor(e => e.Status, f => f.PickRandom<EventStatus>());
 }

@@ -5,7 +5,6 @@ namespace GarageBooking.Persistence.Entities;
 public class EventEntity
 {
     public long Id { get; set; }
-    public EventType EventType { get; set; }
     public string Title { get; set; }
     public EventStatus Status { get; set; }
     public DateTime StartDate { get; set; }
