@@ -6,14 +6,19 @@ namespace GarageBooking.Persistence.Configurations;
 
 public class EventConfiguration : IEntityTypeConfiguration<EventEntity>
 {
-    public void Configure(EntityTypeBuilder<EventEntity> b)
+    public void Configure(EntityTypeBuilder<EventEntity> builder)
     {
-        b.ToTable("events");
+        builder.ToTable("events");
 
-        b.Property(x => x.Status)
+        builder.Property(x => x.Status)
             .HasConversion<int>();
 
-        b.Property(x => x.Title)
+        builder.Property(x => x.Title)
             .HasMaxLength(200);
+
+        builder.HasOne(x => x.User)
+            .WithMany(u => u.Events)
+            .HasForeignKey(x => x.UserId)
+            .HasPrincipalKey(u => u.Id);
     }
 }

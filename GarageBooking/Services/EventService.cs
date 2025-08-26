@@ -21,6 +21,7 @@ public class EventService : IEventService
     public async Task<List<EventModel>> GetEventsByPeriodAsync(DateTime startDate, DateTime endDate)
     {
         var entities = await _dbContext.Events
+            .Include(x => x.User) 
             .Where(x => x.StartDate >= startDate && x.EndDate <= endDate)
             .ToListAsync();
 
