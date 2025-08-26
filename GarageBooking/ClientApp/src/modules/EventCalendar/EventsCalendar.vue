@@ -59,7 +59,7 @@ const calendarApp = shallowRef(
     events: eventList.value.map((e) => ({
       id: e.id,
       title: e.title,
-      people: ["тест тестович"],
+      people: [e.user.fullName],
       start: dayjs(e.startDate).format("YYYY-MM-DD HH:mm"),
       end: dayjs(e.endDate).format("YYYY-MM-DD HH:mm"),
     })),
