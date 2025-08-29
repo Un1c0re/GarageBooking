@@ -1,6 +1,7 @@
 import "./style.css";
 import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
+import "dayjs/locale/ru";
 
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import dayjs from "dayjs";
@@ -19,6 +20,7 @@ import App from "./App.vue";
 import router from "./router";
 
 dayjs.extend(updateLocale);
+dayjs.locale("ru");
 
 dayjs.updateLocale("ru", {
   formats: {
