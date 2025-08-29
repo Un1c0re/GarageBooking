@@ -12,6 +12,7 @@ public static class EventMap
             Id = entity.Id,
             Title = entity.Title,
             Status = entity.Status,
+            Date = entity.Date,
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             User = entity.User.ToModel()

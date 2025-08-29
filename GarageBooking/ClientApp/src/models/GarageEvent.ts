@@ -10,7 +10,7 @@ export default class GarageEvent {
     this.status = options.status ?? EventStatus.Pending;
     this.startDate = options.startDate ?? new Date();
     this.endDate = options.endDate ?? new Date();
-    this.date = options.date ?? new Date();
+    this.date = options.date ? dayjs(options.date).startOf("day").toDate() : new Date();
     this.user = options.user ? new User(options.user) : new User({});
   }
 

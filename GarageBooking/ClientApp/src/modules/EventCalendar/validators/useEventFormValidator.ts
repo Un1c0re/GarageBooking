@@ -1,15 +1,10 @@
 import { FormRules } from "element-plus";
 
-import { compareTimes } from "@/modules/EventCalendar/helpers/TimeHelpers";
 import { Form } from "@/models/Form";
 import { Time } from "@/models/Time";
+import { compareTimes } from "@/modules/EventCalendar/helpers/TimeHelpers";
 
-export const validateTimeRange = (
-  form: Form,
-  field1: keyof Form,
-  field2: keyof Form,
-  busyRanges: Time[][],
-) => {
+export const validateTimeRange = (form: Form, field1: keyof Form, field2: keyof Form, busyRanges: Time[][]) => {
   return (_: any, value: string, callback: (error?: Error) => void) => {
     if (!value || !form[field2]) return callback();
 
@@ -19,9 +14,7 @@ export const validateTimeRange = (
     if (!compareTimes(startTime, endTime)) {
       return callback(
         new Error(
-          field1 === "startTime"
-            ? "Начало должно быть раньше окончания"
-            : "окончание должно быть позже начала",
+          field1 === "startTime" ? "Начало должно быть раньше окончания" : "окончание должно быть позже начала",
         ),
       );
     }
