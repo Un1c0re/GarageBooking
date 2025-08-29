@@ -53,8 +53,8 @@ public class EventController : ApiControllerBase
     {
         try
         {
-            var result = await _service.DeleteEventAsync(id);
-            return Ok(result);
+            await _service.DeleteEventAsync(id);
+            return Ok();
         }
         catch (Exception e)
         {

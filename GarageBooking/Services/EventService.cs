@@ -69,9 +69,10 @@ public class EventService : IEventService
         return model;
     }
 
-    public async Task<EventModel> DeleteEventAsync(long eventId)
+    public async Task DeleteEventAsync(long eventId)
     {
         var entity = await _dbContext.Events.SingleOrDefaultAsync(x => x.Id == eventId);
+
         if (entity == null)
         {
             throw new ObjectNotFoundException($"Запись с Id'{eventId}' не найдена");
@@ -79,7 +80,5 @@ public class EventService : IEventService
 
         _dbContext.Events.Remove(entity);
         await _dbContext.SaveChangesAsync();
-
-        return entity.ToModel();
     }
 }

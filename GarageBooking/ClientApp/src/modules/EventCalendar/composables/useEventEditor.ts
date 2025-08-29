@@ -135,12 +135,22 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
   const remove = () => {
     if (event.value == null) return;
 
-    ElMessageBox.alert("Удалить заявку?", "Внимание").then(() => {
-      eventStore.deleteEvent(event.value!.id);
-      calendar.remove(event.value!.id);
+    ElMessageBox.alert("Удалить заявку?", "Внимание").then(async () => {
+      try {
+        await GarageEventService.DeleteEvent(event.value!.id);
+        eventStore.deleteEvent(event.value!.id);
+        calendar.remove(event.value!.id);
 
-      ElMessage.success("Заявка удалена");
-      resetEvent();
+        ElMessage.success("Заявка удалена");
+
+        resetEvent();
+      } catch (e) {
+        ElNotification.error({
+          title: "Не удалось удалить заявку",
+          message: `${e}`,
+          type: "error",
+        });
+      }
     });
   };
 
