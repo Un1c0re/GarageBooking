@@ -22,7 +22,7 @@ public class EventService : IEventService
     {
         var entities = await _dbContext.Events
             .Include(x => x.User) 
-            .Where(x => x.StartDate >= startDate && x.EndDate <= endDate)
+            .Where(x => x.Date >= startDate && x.EndDate <= endDate)
             .ToListAsync();
 
         return entities.Select(e => e.ToModel()).ToList();
