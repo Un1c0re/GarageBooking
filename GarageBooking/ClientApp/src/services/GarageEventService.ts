@@ -16,7 +16,7 @@ const SaveEvent = async (event: GarageEvent) => {
 };
 
 const UpdateEvent = async (event: GarageEvent) => {
-  const { data } = await axiosInstance.put<GarageEvent>(apiUrlPrefix, { event });
+  const { data } = await axiosInstance.put<GarageEvent>(apiUrlPrefix, event);
 
   return new GarageEvent(data);
 };
