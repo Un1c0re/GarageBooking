@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - backend
+      - db-network
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.0.0
@@ -34,7 +34,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - backend
+      - db-network
 
   pgadmin:
     image: elestio/pgadmin:latest
@@ -49,7 +49,18 @@ services:
     ports:
       - "5050:80"
     networks:
-      - backend
+      - db-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - mq-network
 
   app:
     build:
@@ -62,31 +73,48 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       - postgres
+#      - rabbitmq
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
     networks:
-      - backend
+      - db-network
+      - mq-network
 
-  payment-service:
+  payment-app:
     build:
-      context: ./payment-service
+      context: ./GarageBooking/PaymentApp
       dockerfile: Dockerfile
     ports:
       - "4001:4001"
+    env_file:
+      - ./GarageBooking/PaymentApp/.env
     environment:
       DATABASE_URL: "postgresql://admin:admin@postgres:5432/garagedb?schema=payment"
       NODE_ENV: development
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
     depends_on:
       - postgres
+#      - rabbitmq
     networks:
-      - backend
+      - db-network
+      - mq-network
 
+  notification-app:
+    build: 
+      context: ./GarageBooking/NotificationApp
+      dockerfile: Dockerfile
+    env_file:
+      - ./GarageBooking/NotificationApp/.env
+    depends_on:
+      - mq-network
 volumes:
   postgres_data:
 
 networks:
-  backend:
+  db-network:
+    driver: bridge
+  mq-network:
     driver: bridge
