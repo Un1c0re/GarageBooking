@@ -1,3 +1,4 @@
+using GarageBooking.Models;
 using GarageBooking.Services;
 using GarageBookingTests.Common;
 using GarageBookingTests.Data;
@@ -31,7 +32,13 @@ public class EventServiceTests : TestBase
         var from = events.Min(e => e.StartDate).AddMinutes(-1);
         var to = events.Max(e => e.EndDate).AddMinutes(1);
 
-        var result = await service.GetEventsByPeriodAsync(from, to);
+        var filter = new RequestFilter
+        {
+            StartDate = from,
+            EndDate = to,
+        };
+
+        var result = await service.GetEventsByPeriodAsync(filter);
 
         Assert.Equal(events.Count, result.Count);
     }

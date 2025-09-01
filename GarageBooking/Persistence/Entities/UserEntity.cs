@@ -12,4 +12,6 @@ public class UserEntity
     public string Email { get; set; }
 
     public IList<EventEntity> Events { get; set; } = new List<EventEntity>();
+
+    public string FullName => $"{FirstName} {LastName}";
 }

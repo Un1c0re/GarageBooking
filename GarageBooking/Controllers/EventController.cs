@@ -14,9 +14,9 @@ public class EventController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get(DateTime startDate, DateTime endDate)
+    public async Task<IActionResult> Get(RequestFilter filter)
     {
-        var result = await _service.GetEventsByPeriodAsync(startDate, endDate);
+        var result = await _service.GetEventsByPeriodAsync(filter);
         return Ok(result);
     }
 

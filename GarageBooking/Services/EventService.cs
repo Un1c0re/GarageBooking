@@ -6,6 +6,7 @@ using GarageBooking.Persistence;
 using GarageBooking.Persistence.Entities;
 using GarageBooking.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace GarageBooking.Services;
 
@@ -18,13 +19,36 @@ public class EventService : IEventService
         _dbContext = dbContext;
     }
 
-    public async Task<List<EventModel>> GetEventsByPeriodAsync(DateTime startDate, DateTime endDate)
+    public async Task<List<EventModel>> GetEventsByPeriodAsync(RequestFilter filter)
     {
-        var entities = await _dbContext.Events
-            .Include(x => x.User) 
-            .Where(x => x.Date >= startDate && x.EndDate <= endDate)
-            .ToListAsync();
+        IQueryable<EventEntity> query = _dbContext.Events
+            .Include(x => x.User);
 
+        if (filter is { StartDate: not null, EndDate: not null })
+        {
+            query = query
+                .Where(x => x.Date >= filter.StartDate &&
+                            x.Date < filter.EndDate.Value.AddDays(1));
+        }
+
+        if (string.IsNullOrEmpty(filter.Title))
+        {
+            query = query
+                .Where(x => x.Title.Contains(filter.Title));
+        }
+
+        if (string.IsNullOrEmpty(filter.Username))
+        {
+            query = query
+                .Where(x => x.User.FullName.ToUpper().Contains(filter.Username.ToUpper()));
+        }
+
+        if (filter.Statuses.Length > 0)
+        {
+            query = query.Where(x => filter.Statuses.Contains(x.Status));
+        }
+
+        var entities = await query.ToListAsync();
         return entities.Select(e => e.ToModel()).ToList();
     }
 
