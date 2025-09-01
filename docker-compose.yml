@@ -70,6 +70,20 @@ services:
     networks:
       - backend
 
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+    environment:
+      DATABASE_URL: "postgresql://admin:admin@postgres:5432/garagedb?schema=payment"
+      NODE_ENV: development
+    depends_on:
+      - postgres
+    networks:
+      - backend
+
 volumes:
   postgres_data:
 
