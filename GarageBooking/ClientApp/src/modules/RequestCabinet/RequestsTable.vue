@@ -32,6 +32,7 @@ const data = computed(() =>
     return {
       eventStatus: e.status,
       userFullName: e.user.fullName,
+      eventTitle: e.title,
       eventDate: e.date,
       eventTimeRange: [e.startTime, e.endTime],
       action: e.status,
