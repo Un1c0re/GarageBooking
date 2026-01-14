@@ -16,6 +16,6 @@ export default class User {
   email: string;
 
   get fullName() {
-    return this.firstName + " " + this.lastName;
+    return this.firstName + " ooo " + this.lastName;
   }
 }

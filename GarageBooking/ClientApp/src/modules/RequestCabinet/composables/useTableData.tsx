@@ -3,6 +3,9 @@ import { h, ref } from "vue";
 import dayjs from "dayjs";
 import StatusSuccess from "@/modules/RequestCabinet/ui/icons/StatusSuccess.vue";
 import StatusPending from "@/modules/RequestCabinet/ui/icons/StatusPending.vue";
+import GarageEvent from "@/models/GarageEvent";
+import ConfirmButton from "@/modules/RequestCabinet/ConfirmButton.vue";
+import DenyButton from "@/modules/RequestCabinet/DenyButton.vue";
 
 export const useTableData = () => {
   const columnStyles = {
@@ -73,11 +76,13 @@ export const useTableData = () => {
       title: "Действие",
       width: 1,
       style: columnStyles,
-      cellRenderer: ({ cellData }) => {
+      cellRenderer: ({ rowData, cellData }) => {
+        const event = new GarageEvent({ ...rowData });
+
         return (
           <div>
-            <ElButton type={"success"}>Подтвердить</ElButton>
-            <ElButton type={"danger"}>Отклонить</ElButton>
+            <ConfirmButton event={event} />
+            <DenyButton event={event} />
           </div>
         );
       },

@@ -1,20 +1,12 @@
 <template>
-  <div
-    ref="containerRef"
-    class="flex h-[90vh] flex-col items-stretch overflow-auto"
-    :style="{ gap: GAP + 'px' }"
-  >
+  <div ref="containerRef" class="flex h-[90vh] flex-col items-stretch overflow-auto" :style="{ gap: GAP + 'px' }">
     <div ref="headerRef" class="grid h-fit grid-cols-[repeat(3,_min-content)] gap-2">
       <DateRangePicker class="min-w-80" />
       <StatusesSelect :select-class="'w-44'" />
       <VariableSearch class="min-w-80" />
     </div>
 
-    <RequestTable
-      class="col-span-3 self-center"
-      :table-width="containerWidth"
-      :table-height="tableHeight"
-    />
+    <RequestTable class="col-span-3 self-center" :table-width="containerWidth" :table-height="tableHeight" />
   </div>
 </template>
 

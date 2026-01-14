@@ -1,5 +1,11 @@
 ﻿<template>
-  <ScheduleXCalendar :calendar-app="calendarApp" />
+  <ScheduleXCalendar :calendar-app="calendarApp">
+    <template #timeGridEvent="{ calendarEvent }">
+      <div :style="eventStyles(calendarEvent.color)">
+        {{ calendarEvent.title }}
+      </div>
+    </template>
+  </ScheduleXCalendar>
 </template>
 
 <script lang="ts" setup>
@@ -25,6 +31,17 @@ const eventStore = useEventStore();
 const userStore = useUserStore();
 
 const eventList = computed(() => eventStore.events);
+
+const eventStyles = (color: string) => {
+  return {
+    width: "100%",
+    height: "100%",
+    backgroundColor: `${color}50`,
+    borderLeft: `2px solid ${color}`,
+    borderRadius: "4px",
+    padding: "0 4px",
+  };
+};
 
 const calendarApp = shallowRef(
   createCalendar({
@@ -62,6 +79,7 @@ const calendarApp = shallowRef(
       people: [e.user.fullName],
       start: dayjs(e.startDate).format("YYYY-MM-DD HH:mm"),
       end: dayjs(e.endDate).format("YYYY-MM-DD HH:mm"),
+      color: "#3f9cf4",
     })),
   }),
 );
