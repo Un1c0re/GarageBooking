@@ -67,6 +67,10 @@ const calendarApp = shallowRef(
 );
 
 const handleCreateEvent = (dateTime: string) => {
+  if (dayjs(dateTime).isBefore(dayjs())) {
+    return;
+  }
+
   const newEvent = new GarageEvent({
     date: dayjs(dateTime).startOf("day").toDate(),
     user: userStore.GetUser(),
