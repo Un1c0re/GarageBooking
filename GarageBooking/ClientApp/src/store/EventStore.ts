@@ -4,7 +4,6 @@ import { computed, ref } from "vue";
 
 import GarageEvent from "@/models/GarageEvent";
 import { Time } from "@/models/Time";
-import { forEach } from "lodash";
 
 export const useEventStore = defineStore("EventStore", () => {
   const events = ref<GarageEvent[]>([]);

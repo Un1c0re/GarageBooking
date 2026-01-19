@@ -1,8 +1,20 @@
 ﻿<template>
   <ScheduleXCalendar :calendar-app="calendarApp">
     <template #timeGridEvent="{ calendarEvent }">
-      <div :style="eventStyles(calendarEvent.color)">
-        {{ calendarEvent.title }}
+      <div :style="getCellStyle(calendarEvent.status)" class="flex flex-col items-start px-1">
+        <p class="font-bold">{{ calendarEvent.title }}</p>
+        <span>
+          <el-icon>
+            <Clock />
+          </el-icon>
+          {{ dayjs(calendarEvent.start).format("HH:mm") }} - {{ dayjs(calendarEvent.end).format("HH:mm") }}
+        </span>
+        <span>
+          <el-icon><User /></el-icon> {{ calendarEvent.author }}
+        </span>
+        <span>
+          {{ getStatusName(calendarEvent.status) }}
+        </span>
       </div>
     </template>
   </ScheduleXCalendar>
@@ -11,12 +23,15 @@
 <script lang="ts" setup>
 import "@schedule-x/theme-default/dist/calendar.css";
 
+import { Clock, User } from "@element-plus/icons-vue";
 import { createCalendar, createViewWeek } from "@schedule-x/calendar";
 import { createEventsServicePlugin } from "@schedule-x/events-service";
 import { ScheduleXCalendar } from "@schedule-x/vue";
 import dayjs from "dayjs";
 import { computed, inject, shallowRef } from "vue";
 
+import { getCellStyle, getStatusName } from "@/CalendarItemColorByStatus";
+import { EventStatus } from "@/enums/EventStatus";
 import GarageEvent from "@/models/GarageEvent";
 import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
 import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";
@@ -30,18 +45,7 @@ const eventEditor = inject("eventEditor") as UseEventEditorType;
 const eventStore = useEventStore();
 const userStore = useUserStore();
 
-const eventList = computed(() => eventStore.events);
-
-const eventStyles = (color: string) => {
-  return {
-    width: "100%",
-    height: "100%",
-    backgroundColor: `${color}50`,
-    borderLeft: `2px solid ${color}`,
-    borderRadius: "4px",
-    padding: "0 4px",
-  };
-};
+const eventList = computed(() => eventStore.garageEvents);
 
 const calendarApp = shallowRef(
   createCalendar({
@@ -76,10 +80,10 @@ const calendarApp = shallowRef(
     events: eventList.value.map((e) => ({
       id: e.id,
       title: e.title,
-      people: [e.user.fullName],
+      author: e.user.fullName,
       start: dayjs(e.startDate).format("YYYY-MM-DD HH:mm"),
       end: dayjs(e.endDate).format("YYYY-MM-DD HH:mm"),
-      color: "#3f9cf4",
+      status: e.status,
     })),
   }),
 );
