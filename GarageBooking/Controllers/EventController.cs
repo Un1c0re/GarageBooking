@@ -14,7 +14,7 @@ public class EventController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get(RequestFilter filter)
+    public async Task<IActionResult> Get([FromQuery] RequestFilter filter)
     {
         var result = await _service.GetEventsByPeriodAsync(filter);
         return Ok(result);

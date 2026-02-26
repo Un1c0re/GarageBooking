@@ -31,19 +31,19 @@ public class EventService : IEventService
                             x.Date < filter.EndDate.Value.AddDays(1));
         }
 
-        if (string.IsNullOrEmpty(filter.Title))
+        if (string.IsNullOrEmpty(filter.Title) == false)
         {
             query = query
                 .Where(x => x.Title.Contains(filter.Title));
         }
 
-        if (string.IsNullOrEmpty(filter.Username))
+        if (string.IsNullOrEmpty(filter.Username) == false)
         {
             query = query
                 .Where(x => x.User.FullName.ToUpper().Contains(filter.Username.ToUpper()));
         }
 
-        if (filter.Statuses.Length > 0)
+        if (filter.Statuses != null && filter.Statuses.Length > 0)
         {
             query = query.Where(x => filter.Statuses.Contains(x.Status));
         }
@@ -58,6 +58,7 @@ public class EventService : IEventService
         {
             Title = model.Title,
             StartDate = model.StartDate,
+            Date = model.Date,
             EndDate = model.EndDate,
             UserId = model.User.Id
         };
