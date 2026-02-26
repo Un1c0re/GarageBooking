@@ -1,4 +1,4 @@
-import { Column, ElButton } from "element-plus";
+import { Column } from "element-plus";
 import { h, ref } from "vue";
 import dayjs from "dayjs";
 import StatusSuccess from "@/modules/RequestCabinet/ui/icons/StatusSuccess.vue";
@@ -6,6 +6,11 @@ import StatusPending from "@/modules/RequestCabinet/ui/icons/StatusPending.vue";
 import GarageEvent from "@/models/GarageEvent";
 import ConfirmButton from "@/modules/RequestCabinet/ConfirmButton.vue";
 import DenyButton from "@/modules/RequestCabinet/DenyButton.vue";
+import { EventStatus } from "@/enums/EventStatus";
+import { getStatusName } from "@/CalendarItemColorByStatus";
+import StatusFailure from "@/modules/RequestCabinet/ui/icons/StatusFailure.vue";
+import StatusApproved from "@/modules/RequestCabinet/ui/icons/StatusApproved.vue";
+import StatusDefault from "@/modules/RequestCabinet/ui/icons/StatusDefault.vue";
 
 export const useTableData = () => {
   const columnStyles = {
@@ -21,10 +26,17 @@ export const useTableData = () => {
       align: "center",
       style: { ...columnStyles, "border-left": "1px solid #f0f2f5" },
       cellRenderer: ({ cellData }) => {
-        if (cellData == 1) {
-          return <StatusSuccess />;
-        } else {
-          return <StatusPending />;
+        switch (cellData) {
+          case EventStatus.Pending:
+            return <StatusPending />;
+          case EventStatus.Approved:
+            return <StatusApproved />;
+          case EventStatus.Payed:
+            return <StatusSuccess />;
+          case EventStatus.Denied:
+            return <StatusFailure />;
+          default:
+            return <StatusDefault />;
         }
       },
     },
@@ -79,12 +91,15 @@ export const useTableData = () => {
       cellRenderer: ({ rowData, cellData }) => {
         const event = new GarageEvent({ ...rowData });
 
-        return (
-          <div>
-            <ConfirmButton event={event} />
-            <DenyButton event={event} />
-          </div>
-        );
+        if (event.status == EventStatus.Pending) {
+          return (
+            <div>
+              <ConfirmButton event={event} />
+              <DenyButton event={event} />
+            </div>
+          );
+        }
+        return <span>{getStatusName(event.status)}</span>;
       },
     },
   ]);

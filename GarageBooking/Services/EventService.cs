@@ -26,21 +26,19 @@ public class EventService : IEventService
 
         if (filter is { StartDate: not null, EndDate: not null })
         {
-            query = query
-                .Where(x => x.Date >= filter.StartDate &&
-                            x.Date < filter.EndDate.Value.AddDays(1));
+            query = query.Where(x => x.Date >= filter.StartDate && 
+                                               x.Date < filter.EndDate.Value.AddDays(1));
         }
 
         if (string.IsNullOrEmpty(filter.Title) == false)
         {
-            query = query
-                .Where(x => x.Title.Contains(filter.Title));
+            query = query.Where(x => x.Title.Contains(filter.Title));
         }
 
         if (string.IsNullOrEmpty(filter.Username) == false)
         {
-            query = query
-                .Where(x => x.User.FullName.ToUpper().Contains(filter.Username.ToUpper()));
+            query = query.Where(x => x.User.FullName.ToUpper()
+                                                              .Contains(filter.Username.ToUpper()));
         }
 
         if (filter.Statuses != null && filter.Statuses.Length > 0)

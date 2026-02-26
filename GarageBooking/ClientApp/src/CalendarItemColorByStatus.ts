@@ -20,6 +20,10 @@ export const getCellStyle = (status: EventStatus) => {
       baseStyle.borderLeft = "4px solid #76ff40";
       return baseStyle;
     case EventStatus.Denied:
+      baseStyle.backgroundColor = "#ffeced";
+      baseStyle.color = "#5f1d1d";
+      baseStyle.borderLeft = "4px solid #ff4040";
+      return baseStyle;
     default:
       return baseStyle;
   }

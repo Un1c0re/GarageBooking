@@ -36,6 +36,7 @@ import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
 import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";
 import { useEventStore } from "@/store/EventStore";
 import { useUserStore } from "@/store/UserStore";
+import { EventStatus } from "@/enums/EventStatus";
 
 const drawer = inject("drawer") as UseDrawerType;
 const eventsServicePlugin = inject("eventService") as ReturnType<typeof createEventsServicePlugin>;
@@ -44,7 +45,7 @@ const eventEditor = inject("eventEditor") as UseEventEditorType;
 const eventStore = useEventStore();
 const userStore = useUserStore();
 
-const eventList = computed(() => eventStore.garageEvents);
+const eventList = computed(() => eventStore.garageEvents.filter((x) => x.status != EventStatus.Denied));
 
 const calendarApp = shallowRef(
   createCalendar({

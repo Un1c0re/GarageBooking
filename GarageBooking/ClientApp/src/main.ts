@@ -12,7 +12,6 @@ import { createPinia } from "pinia";
 import { storePlugin } from "pinia-plugin-store";
 import { createApp } from "vue";
 
-import { DatePlugin } from "@/plugins/DatePlugin";
 import keycloak from "@/services/Identity/Keycloack";
 import UserService from "@/services/UserService";
 import { useUserStore } from "@/store/UserStore";
@@ -42,7 +41,6 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 pinia.use(plugin);
-app.use(DatePlugin);
 app.use(pinia);
 app.use(router);
 app.use(ElementPlus, {
