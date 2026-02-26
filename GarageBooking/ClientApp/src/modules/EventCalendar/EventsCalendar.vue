@@ -31,7 +31,6 @@ import dayjs from "dayjs";
 import { computed, inject, shallowRef } from "vue";
 
 import { getCellStyle, getStatusName } from "@/CalendarItemColorByStatus";
-import { EventStatus } from "@/enums/EventStatus";
 import GarageEvent from "@/models/GarageEvent";
 import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
 import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";

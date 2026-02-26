@@ -39,8 +39,8 @@ export const useTableData = () => {
       },
     },
     {
-      key: "eventTitle",
-      dataKey: "eventTitle",
+      key: "title",
+      dataKey: "title",
       title: "Название",
       width: 1,
       style: columnStyles,
@@ -49,8 +49,8 @@ export const useTableData = () => {
       },
     },
     {
-      key: "EventDate",
-      dataKey: "EventDate",
+      key: "date",
+      dataKey: "date",
       title: "Дата",
       width: 1,
       style: columnStyles,
