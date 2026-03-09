@@ -1,7 +1,10 @@
 ﻿<template>
   <ScheduleXCalendar :calendar-app="calendarApp">
     <template #timeGridEvent="{ calendarEvent }">
-      <div :style="getCellStyle(calendarEvent.status)" class="flex flex-col items-start px-1">
+      <div
+        :style="calendarEvent.isExpired ? getExpiredCellStyle() : getCellStyle(calendarEvent.status)"
+        class="flex flex-col items-start px-1"
+      >
         <p class="font-bold">{{ calendarEvent.title }}</p>
         <span>
           <el-icon>
@@ -30,13 +33,14 @@ import { ScheduleXCalendar } from "@schedule-x/vue";
 import dayjs from "dayjs";
 import { computed, inject, shallowRef } from "vue";
 
-import { getCellStyle, getStatusName } from "@/CalendarItemColorByStatus";
+import { getCellStyle, getExpiredCellStyle, getStatusName } from "@/CalendarItemColorByStatus";
+import { EventStatus } from "@/enums/EventStatus";
 import GarageEvent from "@/models/GarageEvent";
 import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
 import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";
+import GarageEventService from "@/services/GarageEventService";
 import { useEventStore } from "@/store/EventStore";
 import { useUserStore } from "@/store/UserStore";
-import { EventStatus } from "@/enums/EventStatus";
 
 const drawer = inject("drawer") as UseDrawerType;
 const eventsServicePlugin = inject("eventService") as ReturnType<typeof createEventsServicePlugin>;
@@ -74,6 +78,12 @@ const calendarApp = shallowRef(
 
       onClickDateTime(dateTime, e?: UIEvent) {
         handleCreateEvent(dateTime);
+      },
+
+      async onRangeUpdate(range) {
+        const startDate = dayjs(range.start).toDate();
+        const endDate = dayjs(range.end).toDate();
+        eventStore.events = await GarageEventService.GetEventsByPeriod(startDate, endDate);
       },
     },
 

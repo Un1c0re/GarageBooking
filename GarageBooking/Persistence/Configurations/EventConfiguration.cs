@@ -10,6 +10,15 @@ public class EventConfiguration : IEntityTypeConfiguration<EventEntity>
     {
         builder.ToTable("events");
 
+        builder.Property(x => x.Date)
+            .HasColumnType("timestamp without time zone");
+
+        builder.Property(x => x.StartDate)
+            .HasColumnType("timestamp without time zone");
+
+        builder.Property(x => x.EndDate)
+            .HasColumnType("timestamp without time zone");
+
         builder.Property(x => x.Status)
             .HasConversion<int>();
 

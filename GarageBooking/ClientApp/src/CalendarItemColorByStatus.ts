@@ -29,6 +29,14 @@ export const getCellStyle = (status: EventStatus) => {
   }
 };
 
+export const getExpiredCellStyle = () => {
+  return {
+    backgroundColor: "#eae9e9",
+    color: "#606061",
+    borderLeft: "4px solid #6a6a6a",
+  };
+};
+
 export const getStatusName = (status: EventStatus) => {
   switch (status) {
     case EventStatus.Pending:

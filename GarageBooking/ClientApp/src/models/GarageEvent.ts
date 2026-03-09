@@ -46,4 +46,8 @@ export default class GarageEvent {
       end: this.endDateTime,
     };
   }
+
+  get isExpired() {
+    return dayjs(this.endDate).isBefore(dayjs());
+  }
 }
