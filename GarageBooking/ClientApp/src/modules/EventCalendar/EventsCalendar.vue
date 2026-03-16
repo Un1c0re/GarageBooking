@@ -3,7 +3,7 @@
     <template #timeGridEvent="{ calendarEvent }">
       <div
         :style="calendarEvent.isExpired ? getExpiredCellStyle() : getCellStyle(calendarEvent.status)"
-        class="flex flex-col items-start px-1"
+        class="flex h-full flex-col items-start px-1"
       >
         <p class="font-bold">{{ calendarEvent.title }}</p>
         <span>
@@ -16,7 +16,7 @@
           <el-icon><User /></el-icon> {{ calendarEvent.author }}
         </span>
         <span>
-          {{ getStatusName(calendarEvent.status) }}
+          <el-icon><Opportunity /></el-icon>{{ getStatusName(calendarEvent.status) }}
         </span>
       </div>
     </template>
@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import "@schedule-x/theme-default/dist/calendar.css";
 
-import { Clock, User } from "@element-plus/icons-vue";
+import { Clock, Opportunity, User } from "@element-plus/icons-vue";
 import { createCalendar, createViewWeek } from "@schedule-x/calendar";
 import { createEventsServicePlugin } from "@schedule-x/events-service";
 import { ScheduleXCalendar } from "@schedule-x/vue";
