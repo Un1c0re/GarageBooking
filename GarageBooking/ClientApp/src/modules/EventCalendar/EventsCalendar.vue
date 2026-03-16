@@ -84,6 +84,16 @@ const calendarApp = shallowRef(
         const startDate = dayjs(range.start).toDate();
         const endDate = dayjs(range.end).toDate();
         eventStore.events = await GarageEventService.GetEventsByPeriod(startDate, endDate);
+        calendarApp.value.events.set(
+          eventList.value.map((e) => ({
+            id: e.id,
+            title: e.title,
+            author: e.user.fullName,
+            start: dayjs(e.startDate).format("YYYY-MM-DD HH:mm"),
+            end: dayjs(e.endDate).format("YYYY-MM-DD HH:mm"),
+            status: e.status,
+          })),
+        );
       },
     },
 
