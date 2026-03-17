@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <ScheduleXCalendar :calendar-app="calendarApp">
     <template #timeGridEvent="{ calendarEvent }">
       <div
@@ -31,25 +31,40 @@ import { createCalendar, createViewWeek } from "@schedule-x/calendar";
 import { createEventsServicePlugin } from "@schedule-x/events-service";
 import { ScheduleXCalendar } from "@schedule-x/vue";
 import dayjs from "dayjs";
-import { computed, inject, shallowRef } from "vue";
+import { computed, inject, onMounted, shallowRef } from "vue";
 
 import { getCellStyle, getExpiredCellStyle, getStatusName } from "@/CalendarItemColorByStatus";
+import { UseDateShortcutsType } from "@/composables/useDateShortcuts";
 import { EventStatus } from "@/enums/EventStatus";
 import GarageEvent from "@/models/GarageEvent";
+import { UseCalendarEventsType } from "@/modules/EventCalendar/composables/useCalendarEvents";
 import { UseDrawerType } from "@/modules/EventCalendar/composables/useDrawer";
 import { UseEventEditorType } from "@/modules/EventCalendar/composables/useEventEditor";
-import GarageEventService from "@/services/GarageEventService";
-import { useEventStore } from "@/store/EventStore";
 import { useUserStore } from "@/store/UserStore";
 
 const drawer = inject("drawer") as UseDrawerType;
+const dateShortcuts = inject("dateShortcuts") as UseDateShortcutsType;
+const calendarEvents = inject("calendarEvents") as UseCalendarEventsType;
 const eventsServicePlugin = inject("eventService") as ReturnType<typeof createEventsServicePlugin>;
 const eventEditor = inject("eventEditor") as UseEventEditorType;
 
-const eventStore = useEventStore();
 const userStore = useUserStore();
 
-const eventList = computed(() => eventStore.garageEvents.filter((x) => x.status != EventStatus.Denied));
+const eventList = computed(() => calendarEvents.events.value.filter((x) => x.status != EventStatus.Denied));
+
+const setCalendarEvents = () => {
+  calendarApp.value.events.set(
+    eventList.value.map((e) => ({
+      id: e.id,
+      title: e.title,
+      author: e.user.fullName,
+      start: dayjs(e.startDate).format("YYYY-MM-DD HH:mm"),
+      end: dayjs(e.endDate).format("YYYY-MM-DD HH:mm"),
+      status: e.status,
+      isExpired: e.isExpired,
+    })),
+  );
+};
 
 const calendarApp = shallowRef(
   createCalendar({
@@ -83,30 +98,21 @@ const calendarApp = shallowRef(
       async onRangeUpdate(range) {
         const startDate = dayjs(range.start).toDate();
         const endDate = dayjs(range.end).toDate();
-        eventStore.events = await GarageEventService.GetEventsByPeriod(startDate, endDate);
-        calendarApp.value.events.set(
-          eventList.value.map((e) => ({
-            id: e.id,
-            title: e.title,
-            author: e.user.fullName,
-            start: dayjs(e.startDate).format("YYYY-MM-DD HH:mm"),
-            end: dayjs(e.endDate).format("YYYY-MM-DD HH:mm"),
-            status: e.status,
-          })),
-        );
+        await calendarEvents.loadRange(startDate, endDate);
+        setCalendarEvents();
       },
     },
 
-    events: eventList.value.map((e) => ({
-      id: e.id,
-      title: e.title,
-      author: e.user.fullName,
-      start: dayjs(e.startDate).format("YYYY-MM-DD HH:mm"),
-      end: dayjs(e.endDate).format("YYYY-MM-DD HH:mm"),
-      status: e.status,
-    })),
+    events: [],
   }),
 );
+
+onMounted(async () => {
+  const startWeek = dateShortcuts.startOfCurrentWeek.value.toDate();
+  const endWeek = dateShortcuts.startOfCurrentWeek.value.add(6, "days").toDate();
+  await calendarEvents.loadRange(startWeek, endWeek);
+  setCalendarEvents();
+});
 
 const handleCreateEvent = (dateTime: string) => {
   if (dayjs(dateTime).isBefore(dayjs())) {
@@ -122,7 +128,7 @@ const handleCreateEvent = (dateTime: string) => {
 };
 
 const handleEditEvent = (eventId: number) => {
-  const eventToEdit = eventStore.getEventById(Number(eventId));
+  const eventToEdit = calendarEvents.getEventById(eventId);
   if (eventToEdit == undefined) return;
 
   eventEditor.setEvent(eventToEdit);

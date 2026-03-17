@@ -6,14 +6,15 @@ import { computed, ref } from "vue";
 import { EventStatus } from "@/enums/EventStatus";
 import { Form } from "@/models/Form";
 import GarageEvent from "@/models/GarageEvent";
+import { UseCalendarEventsType } from "@/modules/EventCalendar/composables/useCalendarEvents";
 import { toMinutes } from "@/modules/EventCalendar/helpers/TimeHelpers";
 import { PermanentDisabledTimes } from "@/modules/EventCalendar/utils/PermanentDisabledTimes";
 import GarageEventService from "@/services/GarageEventService";
-import { useEventStore } from "@/store/EventStore";
 
-export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePlugin>) => {
-  const eventStore = useEventStore();
-
+export const useEventEditor = (
+  calendar: ReturnType<typeof createEventsServicePlugin>,
+  calendarEvents: UseCalendarEventsType,
+) => {
   const event = ref<GarageEvent | null>(null);
 
   const setEvent = (newEvent: GarageEvent | null) => {
@@ -33,7 +34,7 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
     let disabledTimes = [...PermanentDisabledTimes];
 
     if (event.value) {
-      let busyPeriods = eventStore.getTimesByDay(event.value!.date);
+      let busyPeriods = calendarEvents.getTimesByDay(event.value!.date);
 
       busyPeriods = busyPeriods.filter((t) => {
         const startTime = `${t[0].hour}:${t[0].minutes}`;
@@ -109,7 +110,7 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
       if (eventToSave.id == 0) {
         const savedEvent = await GarageEventService.SaveEvent(eventToSave);
 
-        eventStore.addEvent(savedEvent);
+        calendarEvents.addEvent(savedEvent);
         calendar.add(savedEvent.toCalendarEvent);
 
         ElNotification.success({
@@ -119,7 +120,7 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
         });
       } else {
         const savedEvent = await GarageEventService.UpdateEvent(eventToSave);
-        eventStore.updateEvent(savedEvent);
+        calendarEvents.updateEvent(savedEvent);
         calendar.update(savedEvent.toCalendarEvent);
       }
       resetEvent();
@@ -138,7 +139,7 @@ export const useEventEditor = (calendar: ReturnType<typeof createEventsServicePl
     ElMessageBox.alert("Удалить заявку?", "Внимание").then(async () => {
       try {
         await GarageEventService.DeleteEvent(event.value!.id);
-        eventStore.deleteEvent(event.value!.id);
+        calendarEvents.removeEvent(event.value!.id);
         calendar.remove(event.value!.id);
 
         ElMessage.success("Заявка удалена");

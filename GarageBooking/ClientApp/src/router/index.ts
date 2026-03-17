@@ -5,6 +5,7 @@ const routes: RouteRecordRaw[] = [
     path: "/calendar",
     name: "Calendar",
     component: () => import("@/views/TheEventCalendarView.vue"),
+    meta: { keepAlive: true },
   },
   {
     path: "/requests",
