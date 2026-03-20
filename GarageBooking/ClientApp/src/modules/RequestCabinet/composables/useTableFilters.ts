@@ -3,7 +3,7 @@ import { reactive, ref } from "vue";
 
 import { ISelectOption } from "@/models/SelectOption";
 
-export const useFilters = () => {
+export const useTableFilters = () => {
   const searchPattern = ref<string>("");
   const dateRange = ref<string[]>([]);
   const statuses = ref<ISelectOption[]>([]);
@@ -61,4 +61,4 @@ export const useFilters = () => {
   };
 };
 
-export type UseFiltersType = ReturnType<typeof useFilters>;
+export type UseFiltersType = ReturnType<typeof useTableFilters>;

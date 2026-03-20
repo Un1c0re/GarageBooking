@@ -12,7 +12,7 @@ import StatusFailure from "@/modules/RequestCabinet/ui/icons/StatusFailure.vue";
 import StatusApproved from "@/modules/RequestCabinet/ui/icons/StatusApproved.vue";
 import StatusDefault from "@/modules/RequestCabinet/ui/icons/StatusDefault.vue";
 
-export const useTableData = () => {
+export const useTableSetup = () => {
   const columnStyles = {
     "font-weight": "normal",
     "border-right": "1px solid #f0f2f5",

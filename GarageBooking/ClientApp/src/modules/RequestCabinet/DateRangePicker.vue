@@ -16,7 +16,7 @@ import dayjs from "dayjs";
 import { inject } from "vue";
 
 import { UseDateShortcutsType } from "@/composables/useDateShortcuts";
-import { UseFiltersType } from "@/modules/RequestCabinet/composables/useFilters";
+import { UseFiltersType } from "@/modules/RequestCabinet/composables/useTableFilters";
 
 const requestFilters = inject("useFilters") as UseFiltersType;
 const dateShortcuts = inject("dateShortcuts") as UseDateShortcutsType;

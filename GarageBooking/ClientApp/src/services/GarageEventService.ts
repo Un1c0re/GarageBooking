@@ -1,10 +1,26 @@
+import dayjs from "dayjs";
+
 import GarageEvent from "@/models/GarageEvent";
 import axiosInstance from "@/services/Identity/AxiosInstance";
 
 const apiUrlPrefix = "/api/Event";
 
-const GetEventsByPeriod = async (startDate: Date, endDate: Date) => {
-  const { data } = await axiosInstance.get<GarageEvent[]>(apiUrlPrefix, { params: { startDate, endDate } });
+let abortController: null | AbortController;
+
+const GetEvents = async (startDate: Date | null, endDate: Date | null, statuses?: number[] | null) => {
+  abortController?.abort();
+  abortController = new AbortController();
+
+  const params = new URLSearchParams();
+
+  if (startDate) params.append("startDate", dayjs(startDate).format("YYYY-MM-DD"));
+  if (endDate) params.append("endDate", dayjs(endDate).format("YYYY-MM-DD"));
+  statuses?.forEach((s) => params.append("statuses", s.toString()));
+
+  const { data } = await axiosInstance.get<GarageEvent[]>(apiUrlPrefix, {
+    params,
+    signal: abortController?.signal,
+  });
 
   return data.map((d) => new GarageEvent(d));
 };
@@ -26,7 +42,7 @@ const DeleteEvent = async (eventId: number) => {
 };
 
 export default {
-  GetEventsByPeriod,
+  GetEvents,
   SaveEvent,
   UpdateEvent,
   DeleteEvent,

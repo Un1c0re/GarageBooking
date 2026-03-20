@@ -13,7 +13,7 @@ export const useCalendarEvents = () => {
   };
 
   const loadRange = async (startDate: Date, endDate: Date) => {
-    const loaded = await GarageEventService.GetEventsByPeriod(startDate, endDate);
+    const loaded = await GarageEventService.GetEvents(startDate, endDate);
     setEvents(loaded);
     return events.value;
   };

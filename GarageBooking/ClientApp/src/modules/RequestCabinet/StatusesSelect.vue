@@ -40,7 +40,7 @@ import { CheckboxValueType } from "element-plus";
 import { computed, inject, ref } from "vue";
 
 import { ISelectOption } from "@/models/SelectOption";
-import { UseFiltersType } from "@/modules/RequestCabinet/composables/useFilters";
+import { UseFiltersType } from "@/modules/RequestCabinet/composables/useTableFilters";
 
 const requestFilters = inject("useFilters") as UseFiltersType;
 

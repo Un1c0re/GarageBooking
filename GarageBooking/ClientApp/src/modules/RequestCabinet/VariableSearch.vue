@@ -10,7 +10,7 @@
 import { Search } from "@element-plus/icons-vue";
 import { inject } from "vue";
 
-import { UseFiltersType } from "@/modules/RequestCabinet/composables/useFilters";
+import { UseFiltersType } from "@/modules/RequestCabinet/composables/useTableFilters";
 
 const requestFilters = inject("useFilters") as UseFiltersType;
 </script>
